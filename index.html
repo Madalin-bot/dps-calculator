@@ -194,7 +194,7 @@
     blackflames: { spaReq: 10, multi: 4.8 },
     blizzard: { spaReq: 9, multi: 1.9 },
     sunburn: { spaReq: 7, multi: 1.75 },
-    blueflame: { spaReq: 9, multi: 1.3 },
+    blueflame: { spaReq: 5, multi: 1.3 },
     plasma: { spaReq: 7, multi: 1.55 },
     dismantle: { spaReq: 6, multi: 2.3 },
     blaze: { spaReq: 7, multi: 1.5 }
@@ -221,6 +221,7 @@
       return;
     }
 
+
     const fullDamage = damage * unitMultiplier;
     const critChanceDecimal = critChance / 100;
     const critDmgDecimal = critDmg / 100;
@@ -234,10 +235,15 @@
       const dotInterval = Math.ceil(dotDuration / spa) * spa;
       const dotDps = (fullDamage * dotRatio) / dotInterval;
 
+      const baseDps = fullDamage / spa;
+
+
+      const averageNoCritDps = baseDps + dotDps;
+
       const totalDps = hitDps + dotDps;
 
       resultDiv.innerHTML =
-              `Usual DPS(no crit): ${formatLargeNumber(hitDps)}<br>` +
+              `Usual DPS(no crit): ${formatLargeNumber(averageNoCritDps)}<br>` +
               `Total DPS(with crit): ${formatLargeNumber(totalDps)}`;
     } else {
       const baseHitDps = fullDamage / spa;
