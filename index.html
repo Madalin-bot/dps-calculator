@@ -174,6 +174,22 @@
       <option value="dismantle">Dismantle</option>
       <option value="blaze">Blaze</option>
     </select>
+
+    <select id="statusEffect1">
+      <option value="none">None</option>
+      <option value="bolt">Bolt</option>
+      <option value="bleed">Bleed</option>
+      <option value="hemorrhage">Hemorrhage</option>
+      <option value="burn">Burn</option>
+      <option value="mutilate">Mutilate</option>
+      <option value="blackflames">Blackflames</option>
+      <option value="blizzard">Blizzard</option>
+      <option value="sunburn">Sunburn</option>
+      <option value="blueflame">Blueflame</option>
+      <option value="plasma">Plasma</option>
+      <option value="dismantle">Dismantle</option>
+      <option value="blaze">Blaze</option>
+    </select>
     <button onclick="calculateDPS()">Calculate DPS</button>
     <div class="result" id="result"></div>
   </div>
@@ -192,7 +208,11 @@
     blueflame: { spaReq: 5, multi: 1.3 },
     plasma: { spaReq: 7, multi: 1.55 },
     dismantle: { spaReq: 6, multi: 2.3 },
-    blaze: { spaReq: 7, multi: 1.5 }
+    blaze: { spaReq: 7, multi: 1.5 },
+    hex: { spaReq: 6, multi: 0.5},
+    electrify: { spaReq: 3, multi: 0.3},
+    poison: { spaReq: 6, multi: 2.3},
+    detonation: { spaReq: 7, multi: 4.2}
   };
 
   function formatLargeNumber(num) {
@@ -207,8 +227,10 @@
     const unitMultiplier = parseFloat(document.getElementById('damageUnit').value);
     const spa = parseFloat(document.getElementById('spa').value);
     const critDmg = parseFloat(document.getElementById('critDmg').value) || 0;
-    const critChance = parseFloat(document.getElementById('critChance').value) || 0;
+    let critChance = parseFloat(document.getElementById('critChance').value) || 0;
+    critChance = Math.min(critChance, 100);
     const statusKey = document.getElementById('statusEffect').value;
+    const statusKey1 = document.getElementById('statusEffect1').value;
     const resultDiv = document.getElementById('result');
 
     if (isNaN(damage) || isNaN(spa) || spa === 0 || isNaN(unitMultiplier)) {
@@ -216,36 +238,35 @@
       return;
     }
 
-
     const fullDamage = damage * unitMultiplier;
     const critChanceDecimal = critChance / 100;
     const critDmgDecimal = critDmg / 100;
     const averageHit = fullDamage * (1 + critChanceDecimal * critDmgDecimal);
     const hitDps = averageHit / spa;
+    const baseDps = fullDamage / spa;
 
+    let totalDotDps = 0;
+
+    // Add DOT from first effect
     if (statusKey !== 'none' && dotConfigs[statusKey]) {
       const config = dotConfigs[statusKey];
-      const dotRatio = config.multi;
-      const dotDuration = config.spaReq;
-      const dotInterval = Math.ceil(dotDuration / spa) * spa;
-      const dotDps = (fullDamage * dotRatio) / dotInterval;
-
-      const baseDps = fullDamage / spa;
-
-
-      const averageNoCritDps = baseDps + dotDps;
-
-      const totalDps = hitDps + dotDps;
-
-      resultDiv.innerHTML =
-              `Usual DPS(no crit): ${formatLargeNumber(averageNoCritDps)}<br>` +
-              `Total DPS(with crit): ${formatLargeNumber(totalDps)}`;
-    } else {
-      const baseHitDps = fullDamage / spa;
-      resultDiv.innerHTML =
-              `Base DPS (no crit): ${formatLargeNumber(baseHitDps)}<br>` +
-              `Average DPS (with crit): ${formatLargeNumber(hitDps)}`;
+      const dotInterval = Math.ceil(config.spaReq / spa) * spa;
+      totalDotDps += (fullDamage * config.multi) / dotInterval;
     }
+
+    // Add DOT from second effect
+    if (statusKey1 !== 'none' && dotConfigs[statusKey1]) {
+      const config1 = dotConfigs[statusKey1];
+      const dotInterval1 = Math.ceil(config1.spaReq / spa) * spa;
+      totalDotDps += (fullDamage * config1.multi) / dotInterval1;
+    }
+
+    const averageNoCritDps = baseDps + totalDotDps;
+    const totalDps = hitDps + totalDotDps;
+
+    resultDiv.innerHTML =
+            `Usual DPS (no crit): ${formatLargeNumber(averageNoCritDps)}<br>` +
+            `Total DPS (with crit): ${formatLargeNumber(totalDps)}`;
   }
 
 
