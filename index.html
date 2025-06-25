@@ -233,18 +233,6 @@
     return num.toFixed(2);
   }
 
-  function calculateDotDps(config, fullDamage, spa) {
-    if (config.resetsOnHit) {
-      const ticks = Math.floor(spa);
-      const tickRatio = ticks / config.spaReq;
-      const partialDot = fullDamage * config.multi * tickRatio;
-      return partialDot / spa;
-    } else {
-      const dotInterval = Math.ceil(config.spaReq / spa) * spa;
-      return (fullDamage * config.multi) / dotInterval;
-    }
-  }
-
   function calculateDPS() {
     const damage = parseFloat(document.getElementById('damage').value);
     const unitMultiplier = parseFloat(document.getElementById('damageUnit').value);
@@ -270,12 +258,30 @@
 
     let totalDotDps = 0;
 
+    // Effect 1
     if (statusKey !== 'none' && dotConfigs[statusKey]) {
-      totalDotDps += calculateDotDps(dotConfigs[statusKey], fullDamage, spa);
+      const config = dotConfigs[statusKey];
+      if (statusKey === 'yoriichiSolarFlame') {
+        const duration = Math.min(spa, config.spaReq);
+        const partialDot = (fullDamage * config.multi) * (duration / config.spaReq);
+        totalDotDps += partialDot / spa;
+      } else {
+        const dotInterval = Math.ceil(config.spaReq / spa) * spa;
+        totalDotDps += (fullDamage * config.multi) / dotInterval;
+      }
     }
 
+    // Effect 2
     if (statusKey1 !== 'none' && dotConfigs[statusKey1]) {
-      totalDotDps += calculateDotDps(dotConfigs[statusKey1], fullDamage, spa);
+      const config1 = dotConfigs[statusKey1];
+      if (statusKey1 === 'yoriichiSolarFlame') {
+        const duration1 = Math.min(spa, config1.spaReq);
+        const partialDot1 = (fullDamage * config1.multi) * (duration1 / config1.spaReq);
+        totalDotDps += partialDot1 / spa;
+      } else {
+        const dotInterval1 = Math.ceil(config1.spaReq / spa) * spa;
+        totalDotDps += (fullDamage * config1.multi) / dotInterval1;
+      }
     }
 
     const averageNoCritDps = baseDps + totalDotDps;
