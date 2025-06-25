@@ -140,7 +140,7 @@
   </style>
 </head>
 <body>
-<p id = "info-message">This doesn't work with perfect spa DoT units yet, like Benimaru/Itachi/Sasuke!</p>
+<p id="info-message">This doesn't work with perfect spa DoT units yet, like Benimaru/Itachi/Sasuke!</p>
 <canvas id="background"></canvas>
 <button class="toggle-mode" onclick="toggleMode()">Toggle Mode</button>
 
@@ -219,11 +219,11 @@
     plasma: { spaReq: 7, multi: 1.55 },
     dismantle: { spaReq: 6, multi: 2.3 },
     blaze: { spaReq: 7, multi: 1.5 },
-    hex: { spaReq: 6, multi: 0.5},
-    electrify: { spaReq: 3, multi: 0.3},
-    poison: { spaReq: 6, multi: 2.3},
-    detonation: { spaReq: 7, multi: 4.2},
-    yoriichiSolarFlame: { spaReq: 1, multi: 0.4}
+    hex: { spaReq: 6, multi: 0.5 },
+    electrify: { spaReq: 3, multi: 0.3 },
+    poison: { spaReq: 6, multi: 2.3 },
+    detonation: { spaReq: 7, multi: 4.2 },
+    yoriichiSolarFlame: { spaReq: 9, multi: 3.5, resetsOnHit: true }
   };
 
   function formatLargeNumber(num) {
@@ -258,28 +258,39 @@
 
     let totalDotDps = 0;
 
-    // Add DOT from first effect
+    // Effect 1
     if (statusKey !== 'none' && dotConfigs[statusKey]) {
       const config = dotConfigs[statusKey];
-      const dotInterval = Math.ceil(config.spaReq / spa) * spa;
-      totalDotDps += (fullDamage * config.multi) / dotInterval;
+      if (config.resetsOnHit) {
+        const duration = Math.min(spa, config.spaReq);
+        const partialDot = (fullDamage * config.multi) * (duration / config.spaReq);
+        totalDotDps += partialDot / spa;
+      } else {
+        const dotInterval = Math.ceil(config.spaReq / spa) * spa;
+        totalDotDps += (fullDamage * config.multi) / dotInterval;
+      }
     }
 
-    // Add DOT from second effect
+    // Effect 2
     if (statusKey1 !== 'none' && dotConfigs[statusKey1]) {
       const config1 = dotConfigs[statusKey1];
-      const dotInterval1 = Math.ceil(config1.spaReq / spa) * spa;
-      totalDotDps += (fullDamage * config1.multi) / dotInterval1;
+      if (config1.resetsOnHit) {
+        const duration1 = Math.min(spa, config1.spaReq);
+        const partialDot1 = (fullDamage * config1.multi) * (duration1 / config1.spaReq);
+        totalDotDps += partialDot1 / spa;
+      } else {
+        const dotInterval1 = Math.ceil(config1.spaReq / spa) * spa;
+        totalDotDps += (fullDamage * config1.multi) / dotInterval1;
+      }
     }
 
     const averageNoCritDps = baseDps + totalDotDps;
     const totalDps = hitDps + totalDotDps;
 
     resultDiv.innerHTML =
-            `Usual DPS (no crit): ${formatLargeNumber(averageNoCritDps)}<br>` +
-            `Total DPS (with crit): ${formatLargeNumber(totalDps)}`;
+      `Usual DPS (no crit): ${formatLargeNumber(averageNoCritDps)}<br>` +
+      `Total DPS (with crit): ${formatLargeNumber(totalDps)}`;
   }
-
 
   function toggleMode() {
     document.body.classList.toggle('light-mode');
@@ -287,4 +298,3 @@
 </script>
 </body>
 </html>
--
