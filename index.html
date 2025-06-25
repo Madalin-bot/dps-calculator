@@ -65,7 +65,7 @@
       background-color: var(--card-bg);
       padding: 2rem;
       border-radius: var(--border-radius);
-      width: 320px;
+      width: 400px;
       box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
       transition: transform 0.4s ease, box-shadow 0.4s ease;
       transform-style: preserve-3d;
@@ -200,6 +200,86 @@
       <option value="poison">Poison</option>
       <option value="yoriichiSolarFlame">Yoriichi Solar Flame</option>
     </select>
+    <select id="statusEffect2">
+      <option value="none">None</option>
+      <option value="bolt">Bolt</option>
+      <option value="bleed">Bleed</option>
+      <option value="hemorrhage">Hemorrhage</option>
+      <option value="burn">Burn</option>
+      <option value="mutilate">Mutilate</option>
+      <option value="blackflames">Blackflames</option>
+      <option value="blizzard">Blizzard</option>
+      <option value="sunburn">Sunburn</option>
+      <option value="blueflame">Blueflame</option>
+      <option value="plasma">Plasma</option>
+      <option value="dismantle">Dismantle</option>
+      <option value="blaze">Blaze</option>
+      <option value="detonation">Detonation</option>
+      <option value="electrify">Electrify</option>
+      <option value="hex">Hex</option>
+      <option value="poison">Poison</option>
+      <option value="yoriichiSolarFlame">Yoriichi Solar Flame</option>
+    </select>
+    <select id="statusEffect3">
+      <option value="none">None</option>
+      <option value="bolt">Bolt</option>
+      <option value="bleed">Bleed</option>
+      <option value="hemorrhage">Hemorrhage</option>
+      <option value="burn">Burn</option>
+      <option value="mutilate">Mutilate</option>
+      <option value="blackflames">Blackflames</option>
+      <option value="blizzard">Blizzard</option>
+      <option value="sunburn">Sunburn</option>
+      <option value="blueflame">Blueflame</option>
+      <option value="plasma">Plasma</option>
+      <option value="dismantle">Dismantle</option>
+      <option value="blaze">Blaze</option>
+      <option value="detonation">Detonation</option>
+      <option value="electrify">Electrify</option>
+      <option value="hex">Hex</option>
+      <option value="poison">Poison</option>
+      <option value="yoriichiSolarFlame">Yoriichi Solar Flame</option>
+    </select>
+    <select id="statusEffect4">
+      <option value="none">None</option>
+      <option value="bolt">Bolt</option>
+      <option value="bleed">Bleed</option>
+      <option value="hemorrhage">Hemorrhage</option>
+      <option value="burn">Burn</option>
+      <option value="mutilate">Mutilate</option>
+      <option value="blackflames">Blackflames</option>
+      <option value="blizzard">Blizzard</option>
+      <option value="sunburn">Sunburn</option>
+      <option value="blueflame">Blueflame</option>
+      <option value="plasma">Plasma</option>
+      <option value="dismantle">Dismantle</option>
+      <option value="blaze">Blaze</option>
+      <option value="detonation">Detonation</option>
+      <option value="electrify">Electrify</option>
+      <option value="hex">Hex</option>
+      <option value="poison">Poison</option>
+      <option value="yoriichiSolarFlame">Yoriichi Solar Flame</option>
+    </select>
+    <select id="statusEffect5">
+      <option value="none">None</option>
+      <option value="bolt">Bolt</option>
+      <option value="bleed">Bleed</option>
+      <option value="hemorrhage">Hemorrhage</option>
+      <option value="burn">Burn</option>
+      <option value="mutilate">Mutilate</option>
+      <option value="blackflames">Blackflames</option>
+      <option value="blizzard">Blizzard</option>
+      <option value="sunburn">Sunburn</option>
+      <option value="blueflame">Blueflame</option>
+      <option value="plasma">Plasma</option>
+      <option value="dismantle">Dismantle</option>
+      <option value="blaze">Blaze</option>
+      <option value="detonation">Detonation</option>
+      <option value="electrify">Electrify</option>
+      <option value="hex">Hex</option>
+      <option value="poison">Poison</option>
+      <option value="yoriichiSolarFlame">Yoriichi Solar Flame</option>
+    </select>
     <button onclick="calculateDPS()">Calculate DPS</button>
     <div class="result" id="result"></div>
   </div>
@@ -240,8 +320,7 @@
     const critDmg = parseFloat(document.getElementById('critDmg').value) || 0;
     let critChance = parseFloat(document.getElementById('critChance').value) || 0;
     critChance = Math.min(critChance, 100);
-    const statusKey = document.getElementById('statusEffect').value;
-    const statusKey1 = document.getElementById('statusEffect1').value;
+
     const resultDiv = document.getElementById('result');
 
     if (isNaN(damage) || isNaN(spa) || spa === 0 || isNaN(unitMultiplier)) {
@@ -257,39 +336,39 @@
     const baseDps = fullDamage / spa;
 
     let totalDotDps = 0;
+    
+    const dotKeys = [
+      document.getElementById('statusEffect').value,
+      document.getElementById('statusEffect1').value,
+      document.getElementById('statusEffect2').value,
+      document.getElementById('statusEffect3').value,
+      document.getElementById('statusEffect4').value,
+      document.getElementById('statusEffect5').value
+    ];
 
-    // Effect 1
-    if (statusKey !== 'none' && dotConfigs[statusKey]) {
-      const config = dotConfigs[statusKey];
-      if (statusKey === 'yoriichiSolarFlame') {
-        const duration = Math.min(spa, config.spaReq);
-        const partialDot = (fullDamage * config.multi) * (duration / config.spaReq);
-        totalDotDps += partialDot / spa;
-      } else {
-        const dotInterval = Math.ceil(config.spaReq / spa) * spa;
-        totalDotDps += (fullDamage * config.multi) / dotInterval;
-      }
-    }
+    const counted = new Set();
 
-    // Effect 2
-    if (statusKey1 !== 'none' && dotConfigs[statusKey1]) {
-      const config1 = dotConfigs[statusKey1];
-      if (statusKey1 === 'yoriichiSolarFlame') {
-        const duration1 = Math.min(spa, config1.spaReq);
-        const partialDot1 = (fullDamage * config1.multi) * (duration1 / config1.spaReq);
-        totalDotDps += partialDot1 / spa;
-      } else {
-        const dotInterval1 = Math.ceil(config1.spaReq / spa) * spa;
-        totalDotDps += (fullDamage * config1.multi) / dotInterval1;
+    dotKeys.forEach(key => {
+      if (key !== 'none' && dotConfigs[key] && !counted.has(key)) {
+        const config = dotConfigs[key];
+        if (key === 'yoriichiSolarFlame') {
+          const duration = Math.min(spa, config.spaReq);
+          const partialDot = (fullDamage * config.multi) * (duration / config.spaReq);
+          totalDotDps += partialDot / spa;
+        } else {
+          const dotInterval = Math.ceil(config.spaReq / spa) * spa;
+          totalDotDps += (fullDamage * config.multi) / dotInterval;
+        }
+        counted.add(key);
       }
-    }
+    });
 
     const averageNoCritDps = baseDps + totalDotDps;
     const totalDps = hitDps + totalDotDps;
 
     resultDiv.innerHTML =
-      `Usual DPS (no crit): ${formatLargeNumber(averageNoCritDps)}<br>` +
-      `Total DPS (with crit): ${formatLargeNumber(totalDps)}`;
+            `Usual DPS (no crit): ${formatLargeNumber(averageNoCritDps)}<br>` +
+            `Total DPS (with crit): ${formatLargeNumber(totalDps)}`;
   }
 
   function toggleMode() {
