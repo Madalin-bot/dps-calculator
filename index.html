@@ -364,13 +364,13 @@
     if (statusKey1 !== 'none' && dotConfigs[statusKey1]) {
     const config1 = dotConfigs[statusKey1];
     if (config1.resetsOnHit) {
-        const ticks = Math.min(Math.ceil(spa), config2.spaReq);
+        const ticks = Math.min(Math.ceil(spa), config1.spaReq);
         const damagePerTick = (fullDamage * config1.multi) / config1.spaReq;
         const totalDotDamage = damagePerTick * ticks;
         totalDotDps += totalDotDamage / spa;
     } else {
-        const dotInterval = Math.ceil(config2.spaReq / spa) * spa;
-        totalDotDps += (fullDamage * config2.multi) / dotInterval;
+        const dotInterval = Math.ceil(config1.spaReq / spa) * spa;
+        totalDotDps += (fullDamage * config1.multi) / dotInterval;
     }
 }
 
@@ -378,7 +378,7 @@
           const config2 = dotConfigs[statusKey2];
           if (config2.resetsOnHit) {
               const ticks = Math.min(Math.ceil(spa), config2.spaReq);
-              const damagePerTick = (fullDamage * config2.multi) / config.spaReq;
+              const damagePerTick = (fullDamage * config2.multi) / config2.spaReq;
               const totalDotDamage = damagePerTick * ticks;
               totalDotDps += totalDotDamage / spa;
           } else {
@@ -441,6 +441,7 @@
 </script>
 </body>
 </html>
+
 
 
 
