@@ -194,7 +194,6 @@ function calculateDPS() {
   }
 
   const fullDamage = damage * unitMultiplier;
-
   const critChanceDecimal = critChance / 100;
   const critDmgDecimal = critDmg / 100;
 
@@ -203,7 +202,7 @@ function calculateDPS() {
   const hitDps = averageHit / spa;
   const baseDps = fullDamage / spa;
 
-  // DoT DPS calculation (never crits)
+  // DoT DPS
   const statusSlots = dotSelects.map((id, i) => {
     const multiplierInputId = i === 0 ? 'statusEffectMultiplier' : `statusEffect${i}Multiplier`;
     const resetInputId = i === 0 ? 'statusEffectReset' : `statusEffect${i}Reset`;
@@ -213,6 +212,7 @@ function calculateDPS() {
   });
 
   let totalDotDps = 0;
+
   statusSlots.forEach(slot => {
     if (slot.key === 'none' || !dotConfigs[slot.key]) return;
     const cfg = dotConfigs[slot.key];
@@ -220,10 +220,16 @@ function calculateDPS() {
     const totalDotDamage = fullDamage * multiplier;
 
     if (slot.reset) {
-      // DPS = full DoT per attack / SPA
-      totalDotDps += totalDotDamage / spa;
+      // Reset-on-hit DPS
+      // If SPA < DoT duration: DPS = totalDoTDamage * SPA / (spaReq^2)
+      // If SPA >= DoT duration: DPS = totalDoTDamage / SPA
+      if (spa < cfg.spaReq) {
+        totalDotDps += totalDotDamage * spa / (cfg.spaReq * cfg.spaReq);
+      } else {
+        totalDotDps += totalDotDamage / spa;
+      }
     } else {
-      // DPS = evenly spread over DoT duration
+      // Normal DPS spread over DoT duration
       totalDotDps += totalDotDamage / cfg.spaReq;
     }
   });
