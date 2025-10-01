@@ -6,207 +6,45 @@
 <title>DPS Calculator</title>
 <style>
 /* Reset */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-body {
-  background-color: #121212;
-  color: #f0f0f0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  transition: background 0.3s, color 0.3s;
-}
-
-body.light-mode {
-  background-color: #f5f5f5;
-  color: #121212;
-}
-
-button {
-  cursor: pointer;
-}
-
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+body { background-color: #121212; color: #f0f0f0; display: flex; justify-content: center; align-items: center; min-height: 100vh; transition: background 0.3s, color 0.3s; }
+body.light-mode { background-color: #f5f5f5; color: #121212; }
+button { cursor: pointer; }
 /* Container */
-.container {
-  width: 95%;
-  max-width: 900px;
-  padding: 20px;
-  background-color: #1e1e1e;
-  border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-  transition: background 0.3s;
-}
-
-body.light-mode .container {
-  background-color: #ffffff;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-}
-  
-.section input {
-  display: block;
-  width: 100%;
-  margin-bottom: 10px; /* space between inputs */
-}
-
+.container { width: 95%; max-width: 900px; padding: 20px; background-color: #1e1e1e; border-radius: 16px; box-shadow: 0 8px 20px rgba(0,0,0,0.5); transition: background 0.3s; }
+body.light-mode .container { background-color: #ffffff; box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+.section input { display: block; width: 100%; margin-bottom: 10px; }
 /* Toggle Button */
-.toggle-mode {
-  background-color: #ff6b6b;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 12px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  transition: background 0.3s;
-}
-
-body.light-mode .toggle-mode {
-  background-color: #ff4d4d;
-  color: #fff;
-}
-
-.card h1 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 2em;
-  color: #ff6b6b;
-}
-
-body.light-mode .card h1 {
-  color: #ff4d4d;
-}
-
+.toggle-mode { background-color: #ff6b6b; border: none; padding: 10px 20px; border-radius: 12px; font-weight: bold; margin-bottom: 20px; transition: background 0.3s; }
+body.light-mode .toggle-mode { background-color: #ff4d4d; color: #fff; }
+.card h1 { text-align: center; margin-bottom: 20px; font-size: 2em; color: #ff6b6b; }
+body.light-mode .card h1 { color: #ff4d4d; }
 /* Sections */
-.section {
-  margin-bottom: 25px;
-}
-
-.section h2 {
-  font-size: 1.2em;
-  margin-bottom: 10px;
-  border-bottom: 2px solid #ff6b6b;
-  display: inline-block;
-  padding-bottom: 2px;
-}
-
-body.light-mode .section h2 {
-  border-bottom: 2px solid #ff4d4d;
-}
-
-input, select {
-  width: calc(50% - 10px);
-  padding: 10px;
-  margin: 5px 5px 5px 0;
-  border-radius: 8px;
-  border: none;
-  font-size: 1em;
-  background-color: #2c2c2c;
-  color: #f0f0f0;
-  transition: background 0.3s, color 0.3s;
-}
-
-body.light-mode input, body.light-mode select {
-  background-color: #f0f0f0;
-  color: #121212;
-}
-
-select {
-  cursor: pointer;
-}
-
-/* Base attack row (damage + unit) */
-.base-attack-row {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.base-attack-row input,
-.base-attack-row select {
-  flex: 1;
-}
-
+.section { margin-bottom: 25px; }
+.section h2 { font-size: 1.2em; margin-bottom: 10px; border-bottom: 2px solid #ff6b6b; display: inline-block; padding-bottom: 2px; }
+body.light-mode .section h2 { border-bottom: 2px solid #ff4d4d; }
+input, select { width: calc(50% - 10px); padding: 10px; margin: 5px 5px 5px 0; border-radius: 8px; border: none; font-size: 1em; background-color: #2c2c2c; color: #f0f0f0; transition: background 0.3s, color 0.3s; }
+body.light-mode input, body.light-mode select { background-color: #f0f0f0; color: #121212; }
+select { cursor: pointer; }
+/* Base attack row */
+.base-attack-row { display: flex; gap: 10px; margin-bottom: 10px; }
+.base-attack-row input, .base-attack-row select { flex: 1; }
 /* DOT Grid */
-.dot-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 10px;
-}
-
-.dot-slot {
-  display: flex;
-  flex-direction: column;
-}
-
-.dot-slot label {
-  margin-bottom: 5px;
-  font-weight: 600;
-}
-
-.dot-slot input[type="checkbox"] {
-  width: auto;
-  margin-top: 5px;
-}
-
+.dot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.dot-slot { display: flex; flex-direction: column; }
+.dot-slot label { margin-bottom: 5px; font-weight: 600; }
+.dot-slot input[type="checkbox"] { width: auto; margin-top: 5px; }
 /* Buttons */
-.button-container {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.button-container button {
-  background-color: #1e90ff;
-  border: none;
-  padding: 12px 30px;
-  border-radius: 12px;
-  font-weight: bold;
-  font-size: 1em;
-  color: #fff;
-  transition: background 0.3s;
-}
-
-.button-container button:hover {
-  background-color: #0f75d1;
-}
-
-body.light-mode .button-container button {
-  background-color: #007bff;
-  color: #fff;
-}
-
-body.light-mode .button-container button:hover {
-  background-color: #005fcc;
-}
-
+.button-container { text-align: center; margin-top: 20px; }
+.button-container button { background-color: #1e90ff; border: none; padding: 12px 30px; border-radius: 12px; font-weight: bold; font-size: 1em; color: #fff; transition: background 0.3s; }
+.button-container button:hover { background-color: #0f75d1; }
+body.light-mode .button-container button { background-color: #007bff; color: #fff; }
+body.light-mode .button-container button:hover { background-color: #005fcc; }
 /* Result */
-.result {
-  margin-top: 20px;
-  padding: 15px;
-  border-radius: 12px;
-  background-color: #2c2c2c;
-  font-weight: bold;
-  text-align: center;
-}
-
-body.light-mode .result {
-  background-color: #e0e0e0;
-  color: #121212;
-}
-
+.result { margin-top: 20px; padding: 15px; border-radius: 12px; background-color: #2c2c2c; font-weight: bold; text-align: center; }
+body.light-mode .result { background-color: #e0e0e0; color: #121212; }
 /* Responsive */
-@media (max-width: 600px) {
-  input, select {
-    width: 100%;
-  }
-  .base-attack-row {
-    flex-direction: column;
-  }
-}
+@media (max-width: 600px) { input, select { width: 100%; } .base-attack-row { flex-direction: column; } }
 </style>
 </head>
 <body>
@@ -311,14 +149,11 @@ const dotConfigs = {
   rupture: {spaReq: 14, multi: 5.4}
 };
 
-const dotSelects = [
-  'statusEffect','statusEffect1','statusEffect2','statusEffect3','statusEffect4','statusEffect5'
-];
+const dotSelects = ['statusEffect','statusEffect1','statusEffect2','statusEffect3','statusEffect4','statusEffect5'];
 
 // Populate DOT dropdowns
 dotSelects.forEach(id => {
   const select = document.getElementById(id);
-
   const noneOpt = document.createElement('option');
   noneOpt.value = 'none';
   noneOpt.textContent = 'None';
@@ -330,7 +165,6 @@ dotSelects.forEach(id => {
     opt.textContent = key.charAt(0).toUpperCase() + key.slice(1);
     select.appendChild(opt);
   }
-
   select.value = 'none';
 });
 
@@ -349,6 +183,27 @@ function calculateDPS() {
   let critChance = parseFloat(document.getElementById('critChance').value) || 0;
   critChance = Math.min(critChance, 100);
 
+  const passiveMultiplier = parseFloat(document.getElementById('passiveMultiplier').value) || 0;
+  const passiveDuration = parseFloat(document.getElementById('passiveDuration').value) || 0;
+
+  const resultDiv = document.getElementById('result');
+
+  if (isNaN(damage) || isNaN(spa) || spa <= 0 || isNaN(unitMultiplier)) {
+    resultDiv.textContent = 'Please enter valid values';
+    return;
+  }
+
+  const fullDamage = damage * unitMultiplier;
+
+  const critChanceDecimal = critChance / 100;
+  const critDmgDecimal = critDmg / 100;
+
+  // Base attack DPS
+  const averageHit = fullDamage * (1 + critChanceDecimal * critDmgDecimal);
+  const hitDps = averageHit / spa;
+  const baseDps = fullDamage / spa;
+
+  // DoT DPS calculation (never crits)
   const statusSlots = dotSelects.map((id, i) => {
     const multiplierInputId = i === 0 ? 'statusEffectMultiplier' : `statusEffect${i}Multiplier`;
     const resetInputId = i === 0 ? 'statusEffectReset' : `statusEffect${i}Reset`;
@@ -357,50 +212,30 @@ function calculateDPS() {
     return { key: document.getElementById(id).value, custom: isNaN(customValue) ? null : customValue, reset: resetChecked };
   });
 
-  const resultDiv = document.getElementById('result');
-
-  const passiveMultiplier = parseFloat(document.getElementById('passiveMultiplier').value) || 0;
-  const passiveDuration = parseFloat(document.getElementById('passiveDuration').value) || 0;
-
-  if (isNaN(damage) || isNaN(spa) || spa === 0 || isNaN(unitMultiplier)) {
-    resultDiv.textContent = 'Please enter valid values';
-    return;
-  }
-
-  const fullDamage = damage * unitMultiplier;
-  const critChanceDecimal = critChance / 100;
-  const critDmgDecimal = critDmg / 100;
-  const averageHit = fullDamage * (1 + critChanceDecimal * critDmgDecimal);
-  const hitDps = averageHit / spa;
-  const baseDps = fullDamage / spa;
-
-  function calculateDotDps(slot) {
-    const { key, custom, reset } = slot;
-    if (key === 'none' || !dotConfigs[key]) return 0;
-    const config = dotConfigs[key];
-    const multiplier = custom || config.multi;
-
-    if (reset) {
-      const ticks = Math.min(Math.ceil(spa), config.spaReq);
-      const damagePerTick = (fullDamage * multiplier) / config.spaReq;
-      return (damagePerTick * ticks) / spa;
-    } else {
-      const dotInterval = Math.ceil(config.spaReq / spa) * spa;
-      return (fullDamage * multiplier) / dotInterval;
-    }
-  }
-
   let totalDotDps = 0;
   statusSlots.forEach(slot => {
-    totalDotDps += calculateDotDps(slot);
+    if (slot.key === 'none' || !dotConfigs[slot.key]) return;
+    const cfg = dotConfigs[slot.key];
+    const multiplier = slot.custom || cfg.multi;
+    const totalDotDamage = fullDamage * multiplier;
+
+    if (slot.reset) {
+      // DPS = full DoT per attack / SPA
+      totalDotDps += totalDotDamage / spa;
+    } else {
+      // DPS = evenly spread over DoT duration
+      totalDotDps += totalDotDamage / cfg.spaReq;
+    }
   });
 
-  const averageNoCritDps = baseDps + totalDotDps;
-  let totalDps = hitDps + totalDotDps;
-
+  // Passive DPS
+  let passiveDps = 0;
   if (passiveMultiplier > 0 && passiveDuration > 0) {
-    totalDps += (fullDamage * passiveMultiplier) / passiveDuration;
+    passiveDps = (fullDamage * passiveMultiplier) / passiveDuration;
   }
+
+  const averageNoCritDps = baseDps + totalDotDps + passiveDps;
+  const totalDps = hitDps + totalDotDps + passiveDps;
 
   resultDiv.innerHTML = `
     Usual DPS (no crit): ${formatLargeNumber(averageNoCritDps)}<br>
@@ -414,4 +249,3 @@ function toggleMode() {
 </script>
 </body>
 </html>
-
