@@ -5,142 +5,154 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DPS Calculator</title>
   <style>
-  :root {
-    --bg-color: #121212;
-    --text-color: #ffffff;
-    --input-bg: #1e1e1e;
-    --button-bg: #333;
-    --result-color: #00ffcc;
-    --card-bg: #1a1a1a;
-    --border-radius: 12px;
-    --transition-speed: 0.3s;
-  }
+:root {
+  --bg-color: #121212;
+  --text-color: #ffffff;
+  --card-bg: #1e1e1e;
+  --input-bg: #2a2a2a;
+  --button-bg: #00ffcc;
+  --button-hover: #00d6b8;
+  --result-color: #00ffcc;
+  --border-radius: 12px;
+  --transition-speed: 0.3s;
+}
 
-  body.light-mode {
-    --bg-color: #f9f9f9;
-    --text-color: #222;
-    --input-bg: #ffffff;
-    --button-bg: #007acc;
-    --result-color: #007acc;
-    --card-bg: #ffffff;
-  }
+body.light-mode {
+  --bg-color: #f4f4f4;
+  --text-color: #222;
+  --card-bg: #ffffff;
+  --input-bg: #f0f0f0;
+  --button-bg: #007acc;
+  --button-hover: #005ea3;
+  --result-color: #007acc;
+}
 
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    transition: background-color var(--transition-speed), color var(--transition-speed);
-  }
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color var(--transition-speed), color var(--transition-speed);
+}
 
-  h1 {
-    font-size: 2rem;
-    text-align: center;
-    margin-bottom: 1rem;
-  }
+.container {
+  display: flex;
+  justify-content: center;
+  padding: 3rem 1rem;
+}
 
-  .container {
-    display: flex;
-    justify-content: center;
-    padding: 3rem 1rem;
-  }
+.card {
+  background-color: var(--card-bg);
+  padding: 2rem 2.5rem;
+  border-radius: var(--border-radius);
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem 2rem;
+}
 
+.card h1 {
+  grid-column: 1 / -1;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+}
+
+label {
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+  display: block;
+  color: var(--text-color);
+}
+
+input[type="number"], select {
+  width: 100%;
+  padding: 0.7rem;
+  border-radius: var(--border-radius);
+  border: none;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+input[type="number"]::placeholder {
+  color: #888;
+}
+
+input[type="number"]:focus, select:focus {
+  outline: 2px solid var(--button-bg);
+}
+
+.section {
+  grid-column: 1 / -1;
+  background-color: rgba(255,255,255,0.05);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  margin-bottom: 1rem;
+}
+
+.section h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  color: var(--button-bg);
+}
+
+.button-container {
+  grid-column: 1 / -1;
+}
+
+button {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: var(--border-radius);
+  background-color: var(--button-bg);
+  color: var(--text-color);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+button:hover {
+  background-color: var(--button-hover);
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+.result {
+  grid-column: 1 / -1;
+  font-size: 1.2rem;
+  color: var(--result-color);
+  text-align: center;
+  margin-top: 1rem;
+  word-wrap: break-word;
+}
+
+.toggle-mode {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--button-bg);
+  border-radius: 20px;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  z-index: 99;
+}
+
+@media screen and (max-width: 700px) {
   .card {
-    background-color: var(--card-bg);
-    padding: 2rem;
-    border-radius: var(--border-radius);
-    width: 100%;
-    max-width: 500px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-    transition: transform 0.3s ease;
+    grid-template-columns: 1fr;
   }
-
-  .input-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-    align-items: center;
-  }
-
-  input[type="number"], select {
-    flex: 1 1 120px;
-    padding: 0.8rem;
-    font-size: 1.1rem;
-    border: none;
-    border-radius: var(--border-radius);
-    background-color: var(--input-bg);
-    color: var(--text-color);
-  }
-
-  input[type="number"]::placeholder {
-    color: #888;
-  }
-
-  button {
-    width: 100%;
-    padding: 1rem;
-    font-size: 1.2rem;
-    background-color: var(--button-bg);
-    color: var(--text-color);
-    border: none;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    margin-top: 1rem;
-    transition: transform 0.1s ease-in-out, background-color 0.3s ease;
-  }
-
-  button:hover {
-    background-color: #555;
-  }
-
-  button:active {
-    transform: scale(0.98);
-  }
-
-  .result {
-    margin-top: 1.5rem;
-    font-size: 1.3rem;
-    text-align: center;
-    color: var(--result-color);
-    word-wrap: break-word;
-  }
-
-  label {
-    font-size: 1rem;
-    display: block;
-    margin-bottom: 1rem;
-  }
-
-  .toggle-mode {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    font-size: 0.9rem;
-    padding: 0.5rem 1rem;
-    background-color: var(--button-bg);
-    border-radius: 20px;
-    border: none;
-    color: var(--text-color);
-    cursor: pointer;
-    z-index: 99;
-  }
-
-  @media screen and (max-width: 600px) {
-    .input-group {
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    input[type="number"], select {
-      flex: 1 1 auto;
-    }
-
-    button {
-      font-size: 1rem;
-    }
-  }
+}
 </style>
 </head>
 <body>
@@ -434,4 +446,5 @@ function toggleMode() {
 </script>
 </body>
 </html>
+
 
