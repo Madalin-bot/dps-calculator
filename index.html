@@ -5,139 +5,143 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DPS Calculator</title>
   <style>
-    :root {
-      --bg-color: #121212;
-      --text-color: #ffffff;
-      --input-bg: #1e1e1e;
-      --button-bg: #333;
-      --result-color: #00ffcc;
-      --card-bg: #1a1a1a;
-      --border-radius: 16px;
-      --transition-speed: 0.3s;
-    }
+  :root {
+    --bg-color: #121212;
+    --text-color: #ffffff;
+    --input-bg: #1e1e1e;
+    --button-bg: #333;
+    --result-color: #00ffcc;
+    --card-bg: #1a1a1a;
+    --border-radius: 12px;
+    --transition-speed: 0.3s;
+  }
 
-    body.light-mode {
-      --bg-color: #ffffff;
-      --text-color: #000000;
-      --input-bg: #f0f0f0;
-      --button-bg: #ddd;
-      --result-color: #007acc;
-      --card-bg: #ffffff;
-    }
+  body.light-mode {
+    --bg-color: #f9f9f9;
+    --text-color: #222;
+    --input-bg: #ffffff;
+    --button-bg: #007acc;
+    --result-color: #007acc;
+    --card-bg: #ffffff;
+  }
 
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      overflow-x: hidden;
-      transition: background-color var(--transition-speed), color var(--transition-speed);
-    }
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+  }
 
-    canvas#background {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-    }
+  h1 {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
 
-    h1 {
-      font-size: 2.2rem;
-      text-align: center;
-      margin-bottom: 1rem;
-    }
+  .container {
+    display: flex;
+    justify-content: center;
+    padding: 3rem 1rem;
+  }
 
-    .container {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      gap: 2rem;
-      padding: 4rem 1rem;
-      flex-wrap: wrap;
-      perspective: 1200px;
-      z-index: 10;
-    }
+  .card {
+    background-color: var(--card-bg);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease;
+  }
 
-    .card {
-      background-color: var(--card-bg);
-      padding: 2rem;
-      border-radius: var(--border-radius);
-      width: 400px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
-      transform-style: preserve-3d;
-    }
+  .input-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    align-items: center;
+  }
 
+  input[type="number"], select {
+    flex: 1 1 120px;
+    padding: 0.8rem;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: var(--border-radius);
+    background-color: var(--input-bg);
+    color: var(--text-color);
+  }
+
+  input[type="number"]::placeholder {
+    color: #888;
+  }
+
+  button {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.2rem;
+    background-color: var(--button-bg);
+    color: var(--text-color);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: transform 0.1s ease-in-out, background-color 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #555;
+  }
+
+  button:active {
+    transform: scale(0.98);
+  }
+
+  .result {
+    margin-top: 1.5rem;
+    font-size: 1.3rem;
+    text-align: center;
+    color: var(--result-color);
+    word-wrap: break-word;
+  }
+
+  label {
+    font-size: 1rem;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .toggle-mode {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--button-bg);
+    border-radius: 20px;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    z-index: 99;
+  }
+
+  @media screen and (max-width: 600px) {
     .input-group {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 0.5rem;
+      flex-direction: column;
+      align-items: stretch;
     }
 
     input[type="number"], select {
-      flex: 1;
-      padding: 0.75rem;
-      font-size: 1rem;
-      border: none;
-      border-radius: var(--border-radius);
-      background-color: var(--input-bg);
-      color: var(--text-color);
+      flex: 1 1 auto;
     }
 
     button {
-      margin-top: 1rem;
-      padding: 0.75rem;
       font-size: 1rem;
-      background-color: var(--button-bg);
-      color: var(--text-color);
-      border: none;
-      border-radius: var(--border-radius);
-      cursor: pointer;
-      transition: transform 0.1s ease-in-out;
     }
-
-    button:active {
-      transform: scale(0.98);
-    }
-
-    .result {
-      margin-top: 1rem;
-      font-size: 1.2rem;
-      text-align: center;
-      color: var(--result-color);
-      white-space: normal;
-    }
-
-    .toggle-mode {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      font-size: 0.9rem;
-      padding: 0.5rem 1rem;
-      background-color: var(--button-bg);
-      border-radius: 20px;
-      border: none;
-      color: var(--text-color);
-      cursor: pointer;
-      z-index: 99;
-    }
-
-    @media screen and (max-width: 768px) {
-      .container {
-        flex-direction: column;
-        align-items: center;
-        padding-top: 2rem;
-      }
-
-      .card {
-        width: 90%;
-        max-width: 400px;
-      }
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
 <p id="info-message">This doesn't work with perfect spa DoT units yet, like Benimaru/Itachi/Sasuke!</p>
@@ -430,3 +434,4 @@ function toggleMode() {
 </script>
 </body>
 </html>
+
