@@ -310,16 +310,20 @@ const dotSelects = [
 // Populate DOT dropdowns
 dotSelects.forEach(id => {
   const select = document.getElementById(id);
+
+  const noneOpt = document.createElement('option');
+  noneOpt.value = 'none';
+  noneOpt.textContent = 'None';
+  select.appendChild(noneOpt);
+
   for (const key in dotConfigs) {
     const opt = document.createElement('option');
     opt.value = key;
     opt.textContent = key.charAt(0).toUpperCase() + key.slice(1);
     select.appendChild(opt);
   }
-  const noneOpt = document.createElement('option');
-  noneOpt.value = 'none';
-  noneOpt.textContent = 'None';
-  select.insertBefore(noneOpt, select.firstChild);
+
+  select.value = 'none'; // <-- ensures default is None
 });
 
 function formatLargeNumber(num) {
@@ -338,7 +342,9 @@ function calculateDPS() {
   critChance = Math.min(critChance, 100);
 
   const statusSlots = dotSelects.map((id, i) => {
-    return { key: document.getElementById(id).value, custom: parseFloat(document.getElementById(id + (i===0?'Multiplier':i+'Multiplier')).value) };
+    const multiplierInputId = i === 0 ? 'statusEffectMultiplier' : `statusEffect${i}Multiplier`;
+    const customValue = parseFloat(document.getElementById(multiplierInputId).value);
+    return { key: document.getElementById(id).value, custom: isNaN(customValue) ? null : customValue };
   });
 
   const resultDiv = document.getElementById('result');
@@ -362,7 +368,7 @@ function calculateDPS() {
   function calculateDotDps(statusKey, customMultiplier) {
     if (statusKey === 'none' || !dotConfigs[statusKey]) return 0;
     const config = dotConfigs[statusKey];
-    const multiplier = customMultiplier && !isNaN(customMultiplier) ? customMultiplier : config.multi;
+    const multiplier = customMultiplier || config.multi;
 
     if (resetOnHitChecked) {
       const ticks = Math.min(Math.ceil(spa), config.spaReq);
@@ -398,3 +404,4 @@ function toggleMode() {
 </script>
 </body>
 </html>
+
