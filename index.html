@@ -283,6 +283,14 @@
           <option value="poison">Poison</option>
           <option value="yoriichiSolarFlame">Yoriichi Solar Flame</option>
       </select>
+    <label>
+  <input type="checkbox" id="resetOnHit"> DOT Resets On Hit
+</label>
+
+<div class="input-group">
+  <input type="number" id="passiveMultiplier" placeholder="Passive Multiplier (e.g. 5)" />
+  <input type="number" id="passiveDuration" placeholder="Passive Duration (seconds)" />
+</div>
     <button onclick="calculateDPS()">Calculate DPS</button>
     <div class="result" id="result"></div>
   </div>
@@ -311,136 +319,87 @@
   };
 
   function formatLargeNumber(num) {
-    if (num >= 1e12) return (num / 1e12).toFixed(2) + '&nbsp;Trillion';
-    if (num >= 1e9) return (num / 1e9).toFixed(2) + '&nbsp;Billion';
-    if (num >= 1e6) return (num / 1e6).toFixed(2) + '&nbsp;Million';
-    return num.toFixed(2);
-  }
-
-  function calculateDPS() {
-    const damage = parseFloat(document.getElementById('damage').value);
-    const unitMultiplier = parseFloat(document.getElementById('damageUnit').value);
-    const spa = parseFloat(document.getElementById('spa').value);
-    const critDmg = parseFloat(document.getElementById('critDmg').value) || 0;
-    let critChance = parseFloat(document.getElementById('critChance').value) || 0;
-    critChance = Math.min(critChance, 100);
-    const statusKey = document.getElementById('statusEffect').value;
-    const statusKey1 = document.getElementById('statusEffect1').value;
-    const statusKey2 = document.getElementById('statusEffect2').value;
-    const statusKey3 = document.getElementById('statusEffect3').value;
-    const statusKey4 = document.getElementById('statusEffect4').value;
-    const statusKey5 = document.getElementById('statusEffect5').value;
-    const resultDiv = document.getElementById('result');
-
-    if (isNaN(damage) || isNaN(spa) || spa === 0 || isNaN(unitMultiplier)) {
-      resultDiv.textContent = 'Please enter valid values';
-      return;
-    }
-
-    const fullDamage = damage * unitMultiplier;
-    const critChanceDecimal = critChance / 100;
-    const critDmgDecimal = critDmg / 100;
-    const averageHit = fullDamage * (1 + critChanceDecimal * critDmgDecimal);
-    const hitDps = averageHit / spa;
-    const baseDps = fullDamage / spa;
-
-    let totalDotDps = 0;
-
-    // Effect 1
-    if (statusKey !== 'none' && dotConfigs[statusKey]) {
-      const config = dotConfigs[statusKey];
-      if (config.resetsOnHit) {
-            const ticks = Math.min(Math.ceil(spa), config.spaReq);
-            const damagePerTick = (fullDamage * config.multi) / config.spaReq;
-            const totalDotDamage = damagePerTick * ticks;
-            totalDotDps += totalDotDamage / spa;
-        } else {
-            const dotInterval = Math.ceil(config.spaReq / spa) * spa;
-            totalDotDps += (fullDamage * config.multi) / dotInterval;
-        }
-    }
-
-    // Effect 2
-    if (statusKey1 !== 'none' && dotConfigs[statusKey1]) {
-    const config1 = dotConfigs[statusKey1];
-    if (config1.resetsOnHit) {
-        const ticks = Math.min(Math.ceil(spa), config1.spaReq);
-        const damagePerTick = (fullDamage * config1.multi) / config1.spaReq;
-        const totalDotDamage = damagePerTick * ticks;
-        totalDotDps += totalDotDamage / spa;
-    } else {
-        const dotInterval = Math.ceil(config1.spaReq / spa) * spa;
-        totalDotDps += (fullDamage * config1.multi) / dotInterval;
-    }
+  if (num >= 1e12) return (num / 1e12).toFixed(2) + '&nbsp;Trillion';
+  if (num >= 1e9) return (num / 1e9).toFixed(2) + '&nbsp;Billion';
+  if (num >= 1e6) return (num / 1e6).toFixed(2) + '&nbsp;Million';
+  return num.toFixed(2);
 }
 
-      if (statusKey2 !== 'none' && dotConfigs[statusKey2]) {
-          const config2 = dotConfigs[statusKey2];
-          if (config2.resetsOnHit) {
-              const ticks = Math.min(Math.ceil(spa), config2.spaReq);
-              const damagePerTick = (fullDamage * config2.multi) / config2.spaReq;
-              const totalDotDamage = damagePerTick * ticks;
-              totalDotDps += totalDotDamage / spa;
-          } else {
-              const dotInterval = Math.ceil(config2.spaReq / spa) * spa;
-              totalDotDps += (fullDamage * config2.multi) / dotInterval;
-          }
-      }
+function calculateDPS() {
+  const damage = parseFloat(document.getElementById('damage').value);
+  const unitMultiplier = parseFloat(document.getElementById('damageUnit').value);
+  const spa = parseFloat(document.getElementById('spa').value);
+  const critDmg = parseFloat(document.getElementById('critDmg').value) || 0;
+  let critChance = parseFloat(document.getElementById('critChance').value) || 0;
+  critChance = Math.min(critChance, 100);
 
-      if (statusKey3 !== 'none' && dotConfigs[statusKey3]) {
-          const config3 = dotConfigs[statusKey3];
-          if (config3.resetsOnHit) {
-              const ticks = Math.min(Math.ceil(spa), config3.spaReq);
-              const damagePerTick = (fullDamage * config3.multi) / config3.spaReq;
-              const totalDotDamage = damagePerTick * ticks;
-              totalDotDps += totalDotDamage / spa;
-          } else {
-              const dotInterval = Math.ceil(config3.spaReq / spa) * spa;
-              totalDotDps += (fullDamage * config3.multi) / dotInterval;
-          }
-      }
+  const statusKeys = [
+    document.getElementById('statusEffect').value,
+    document.getElementById('statusEffect1').value,
+    document.getElementById('statusEffect2').value,
+    document.getElementById('statusEffect3').value,
+    document.getElementById('statusEffect4').value,
+    document.getElementById('statusEffect5').value
+  ];
 
-      if (statusKey4 !== 'none' && dotConfigs[statusKey4]) {
-          const config4 = dotConfigs[statusKey4];
-          if (config4.resetsOnHit) {
-              const ticks = Math.min(Math.ceil(spa), config4.spaReq);
-              const damagePerTick = (fullDamage * config4.multi) / config4.spaReq;
-              const totalDotDamage = damagePerTick * ticks;
-              totalDotDps += totalDotDamage / spa;
-          } else {
-              const dotInterval = Math.ceil(config4.spaReq / spa) * spa;
-              totalDotDps += (fullDamage * config4.multi) / dotInterval;
-          }
-      }
+  const resultDiv = document.getElementById('result');
+  const resetOnHitChecked = document.getElementById('resetOnHit').checked;
 
-      if (statusKey5 !== 'none' && dotConfigs[statusKey5]) {
-          const config5 = dotConfigs[statusKey5];
-          if (config5.resetsOnHit) {
-              const ticks = Math.min(Math.ceil(spa), config5.spaReq);
-              const damagePerTick = (fullDamage * config5.multi) / config5.spaReq;
-              const totalDotDamage = damagePerTick * ticks;
-              totalDotDps += totalDotDamage / spa;
-          } else {
-              const dotInterval = Math.ceil(config5.spaReq / spa) * spa;
-              totalDotDps += (fullDamage * config5.multi) / dotInterval;
-          }
-      }
+  const passiveMultiplier = parseFloat(document.getElementById('passiveMultiplier').value) || 0;
+  const passiveDuration = parseFloat(document.getElementById('passiveDuration').value) || 0;
 
-    const averageNoCritDps = baseDps + totalDotDps;
-    const totalDps = hitDps + totalDotDps;
+  if (isNaN(damage) || isNaN(spa) || spa === 0 || isNaN(unitMultiplier)) {
+    resultDiv.textContent = 'Please enter valid values';
+    return;
+  }
 
-      resultDiv.innerHTML = `
-  Usual DPS (no crit): ${formatLargeNumber(averageNoCritDps)}<br>
-  Total DPS (with crit): ${formatLargeNumber(totalDps)}
-`;
-      }
+  const fullDamage = damage * unitMultiplier;
+  const critChanceDecimal = critChance / 100;
+  const critDmgDecimal = critDmg / 100;
+  const averageHit = fullDamage * (1 + critChanceDecimal * critDmgDecimal);
+  const hitDps = averageHit / spa;
+  const baseDps = fullDamage / spa;
 
-      function toggleMode() {
-        document.body.classList.toggle('light-mode');
-      }
+  // DOT calculation function
+  function calculateDotDps(statusKey) {
+  if (statusKey === 'none' || !dotConfigs[statusKey]) return 0;
+  const config = dotConfigs[statusKey];
+
+
+  if (resetOnHitChecked) {
+    const ticks = Math.min(Math.ceil(spa), config.spaReq);
+    const damagePerTick = (fullDamage * config.multi) / config.spaReq;
+    return (damagePerTick * ticks) / spa;
+  } else {
+    const dotInterval = Math.ceil(config.spaReq / spa) * spa;
+    return (fullDamage * config.multi) / dotInterval;
+  }
+}
+
+  let totalDotDps = 0;
+  statusKeys.forEach(key => { totalDotDps += calculateDotDps(key); });
+
+const averageNoCritDps = baseDps + totalDotDps;
+let totalDps = hitDps + totalDotDps;
+
+// Add passive DPS
+if (passiveMultiplier > 0 && passiveDuration > 0) {
+    totalDps += (fullDamage * passiveMultiplier) / passiveDuration;
+}
+
+  resultDiv.innerHTML = `
+    Usual DPS (no crit): ${formatLargeNumber(averageNoCritDps)}<br>
+    Total DPS (with crit): ${formatLargeNumber(totalDps)}
+  `;
+}
+
+function toggleMode() {
+  document.body.classList.toggle('light-mode');
+}
 </script>
 </body>
 </html>
+
 
 
 
