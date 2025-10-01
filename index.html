@@ -5,163 +5,189 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DPS Calculator</title>
   <style>
-:root {
-  --bg-color: #121212;
-  --text-color: #ffffff;
-  --card-bg: #1e1e1e;
-  --input-bg: #2a2a2a;
-  --button-bg: #00ffcc;
-  --button-hover: #00d6b8;
-  --result-color: #00ffcc;
-  --border-radius: 12px;
-  --transition-speed: 0.3s;
-}
-
-body.light-mode {
-  --bg-color: #f4f4f4;
-  --text-color: #222;
-  --card-bg: #ffffff;
-  --input-bg: #f0f0f0;
-  --button-bg: #007acc;
-  --button-hover: #005ea3;
-  --result-color: #007acc;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  transition: background-color var(--transition-speed), color var(--transition-speed);
-}
-
-.container {
-  display: flex;
-  justify-content: center;
-  padding: 3rem 1rem;
-}
-
-.card {
-  background-color: var(--card-bg);
-  padding: 2rem;
-  border-radius: var(--border-radius);
-  width: 100%;
-  max-width: 700px;
-  box-shadow: 0 12px 50px rgba(0,0,0,0.5);
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.card h1 {
-  text-align: center;
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  color: var(--button-bg);
-}
-
-.section {
-  background-color: rgba(255,255,255,0.05);
-  padding: 1rem 1.5rem;
-  border-radius: var(--border-radius);
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.section h2 {
-  margin: 0;
-  font-size: 1.1rem;
-  color: var(--button-bg);
-}
-
-input[type="number"], select {
-  width: 100%;
-  padding: 0.7rem;
-  border-radius: var(--border-radius);
-  border: none;
-  background-color: var(--input-bg);
-  color: var(--text-color);
-  font-size: 1rem;
-  transition: background-color 0.3s;
-}
-
-input[type="number"]::placeholder {
-  color: #888;
-}
-
-input[type="number"]:focus, select:focus {
-  outline: 2px solid var(--button-bg);
-}
-
-.dot-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem 1.5rem;
-}
-
-.dot-slot {
-  background-color: rgba(255,255,255,0.05);
-  padding: 0.5rem 1rem;
-  border-radius: var(--border-radius);
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
-.button-container {
-  width: 100%;
-}
-
-button {
-  width: 100%;
-  padding: 1rem;
-  font-size: 1.1rem;
-  border: none;
-  border-radius: var(--border-radius);
-  background-color: var(--button-bg);
-  color: var(--text-color);
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.1s;
-}
-
-button:hover {
-  background-color: var(--button-hover);
-}
-
-button:active {
-  transform: scale(0.97);
-}
-
-.result {
-  font-size: 1.2rem;
-  color: var(--result-color);
-  text-align: center;
-  word-wrap: break-word;
-  padding: 0.5rem;
-}
-
-.toggle-mode {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  font-size: 0.9rem;
-  padding: 0.5rem 1rem;
-  background-color: var(--button-bg);
-  border-radius: 20px;
-  border: none;
-  color: var(--text-color);
-  cursor: pointer;
-  z-index: 99;
-}
-
-@media screen and (max-width: 700px) {
-  .dot-grid {
-    grid-template-columns: 1fr;
+  /* Reset */
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
-}
-  </style>
+
+  body {
+    background-color: #121212;
+    color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  body.light-mode {
+    background-color: #f5f5f5;
+    color: #121212;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  /* Container */
+  .container {
+    width: 95%;
+    max-width: 900px;
+    padding: 20px;
+    background-color: #1e1e1e;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    transition: background 0.3s;
+  }
+
+  body.light-mode .container {
+    background-color: #ffffff;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+
+  /* Toggle Button */
+  .toggle-mode {
+    background-color: #ff6b6b;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    transition: background 0.3s;
+  }
+
+  body.light-mode .toggle-mode {
+    background-color: #ff4d4d;
+    color: #fff;
+  }
+
+  .card h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2em;
+    color: #ff6b6b;
+  }
+
+  body.light-mode .card h1 {
+    color: #ff4d4d;
+  }
+
+  /* Sections */
+  .section {
+    margin-bottom: 25px;
+  }
+
+  .section h2 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #ff6b6b;
+    display: inline-block;
+    padding-bottom: 2px;
+  }
+
+  body.light-mode .section h2 {
+    border-bottom: 2px solid #ff4d4d;
+  }
+
+  input, select {
+    width: calc(50% - 10px);
+    padding: 10px;
+    margin: 5px 5px 15px 0;
+    border-radius: 8px;
+    border: none;
+    font-size: 1em;
+    background-color: #2c2c2c;
+    color: #f0f0f0;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  body.light-mode input, body.light-mode select {
+    background-color: #f0f0f0;
+    color: #121212;
+  }
+
+  select {
+    cursor: pointer;
+  }
+
+  /* DOT Grid */
+  .dot-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+  }
+
+  .dot-slot {
+    display: flex;
+    flex-direction: column;
+  }
+
+  label {
+    margin-bottom: 5px;
+    font-weight: 600;
+  }
+
+  /* Checkbox */
+  input[type="checkbox"] {
+    width: auto;
+    margin-right: 8px;
+  }
+
+  /* Buttons */
+  .button-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .button-container button {
+    background-color: #1e90ff;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 1em;
+    color: #fff;
+    transition: background 0.3s;
+  }
+
+  .button-container button:hover {
+    background-color: #0f75d1;
+  }
+
+  body.light-mode .button-container button {
+    background-color: #007bff;
+    color: #fff;
+  }
+
+  body.light-mode .button-container button:hover {
+    background-color: #005fcc;
+  }
+
+  /* Result */
+  .result {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 12px;
+    background-color: #2c2c2c;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  body.light-mode .result {
+    background-color: #e0e0e0;
+    color: #121212;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    input, select {
+      width: 100%;
+    }
+  }
+</style>
 </head>
 <body>
 
@@ -356,3 +382,4 @@ function toggleMode() {
 </script>
 </body>
 </html>
+
