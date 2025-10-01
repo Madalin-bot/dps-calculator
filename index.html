@@ -74,6 +74,7 @@
     .input-group {
       display: flex;
       gap: 0.5rem;
+      margin-bottom: 0.5rem;
     }
 
     input[type="number"], select {
@@ -84,7 +85,6 @@
       border-radius: var(--border-radius);
       background-color: var(--input-bg);
       color: var(--text-color);
-      margin-top: 0.5rem;
     }
 
     button {
@@ -159,166 +159,196 @@
     <input type="number" id="spa" placeholder="Enter SPA (Seconds Per Attack)" />
     <input type="number" id="critDmg" placeholder="Crit Damage % (e.g. 50 for 50%)" />
     <input type="number" id="critChance" placeholder="Crit Chance % (e.g. 30 for 30%)" />
-    <select id="statusEffect">
-      <option value="none">None</option>
-      <option value="bolt">Bolt</option>
-      <option value="bleed">Bleed</option>
-      <option value="hemorrhage">Hemorrhage</option>
-      <option value="burn">Burn</option>
-      <option value="mutilate">Mutilate</option>
-      <option value="blackflames">Blackflames</option>
-      <option value="blizzard">Blizzard</option>
-      <option value="sunburn">Sunburn</option>
-      <option value="blueflame">Blueflame</option>
-      <option value="plasma">Plasma</option>
-      <option value="dismantle">Dismantle</option>
-      <option value="blaze">Blaze</option>
-      <option value="detonation">Detonation</option>
-      <option value="electrify">Electrify</option>
-      <option value="hex">Hex</option>
-      <option value="poison">Poison</option>
-      <option value="yoriichiSolarFlame">Yoriichi Solar Flame</option>
-      <option value="rupture">Rupture</option>
-    </select>
 
-    <select id="statusEffect1">
-      <option value="none">None</option>
-      <option value="bolt">Bolt</option>
-      <option value="bleed">Bleed</option>
-      <option value="hemorrhage">Hemorrhage</option>
-      <option value="burn">Burn</option>
-      <option value="mutilate">Mutilate</option>
-      <option value="blackflames">Blackflames</option>
-      <option value="blizzard">Blizzard</option>
-      <option value="sunburn">Sunburn</option>
-      <option value="blueflame">Blueflame</option>
-      <option value="plasma">Plasma</option>
-      <option value="dismantle">Dismantle</option>
-      <option value="blaze">Blaze</option>
-      <option value="detonation">Detonation</option>
-      <option value="electrify">Electrify</option>
-      <option value="hex">Hex</option>
-      <option value="poison">Poison</option>
-      <option value="yoriichiSolarFlame">Yoriichi Solar Flame</option>
-    </select>
+    <!-- DOT select + custom multiplier inputs -->
+    <div class="input-group">
+      <select id="statusEffect">
+        <option value="none">None</option>
+        <option value="bolt">Bolt</option>
+        <option value="bleed">Bleed</option>
+        <option value="hemorrhage">Hemorrhage</option>
+        <option value="burn">Burn</option>
+        <option value="mutilate">Mutilate</option>
+        <option value="blackflames">Blackflames</option>
+        <option value="blizzard">Blizzard</option>
+        <option value="sunburn">Sunburn</option>
+        <option value="blueflame">Blueflame</option>
+        <option value="plasma">Plasma</option>
+        <option value="dismantle">Dismantle</option>
+        <option value="blaze">Blaze</option>
+        <option value="detonation">Detonation</option>
+        <option value="electrify">Electrify</option>
+        <option value="hex">Hex</option>
+        <option value="poison">Poison</option>
+        <option value="yoriichiSolarFlame">Yoriichi Solar Flame</option>
+        <option value="rupture">Rupture</option>
+      </select>
+      <input type="number" id="statusEffectMultiplier" placeholder="Custom Multiplier" step="0.1"/>
+    </div>
+
+    <!-- Repeat for statusEffect1..statusEffect5 -->
+    <div class="input-group">
+      <select id="statusEffect1">
+        <option value="none">None</option>
+        <option value="mutilate">Mutilate</option>
+        <option value="burn">Burn</option>
+        <option value="bleed">Bleed</option>
+         <option value="hemorrhage">Hemorrhage</option>
+        <option value="burn">Burn</option>
+        <option value="mutilate">Mutilate</option>
+        <option value="blackflames">Blackflames</option>
+        <option value="blizzard">Blizzard</option>
+        <option value="sunburn">Sunburn</option>
+        <option value="blueflame">Blueflame</option>
+        <option value="plasma">Plasma</option>
+        <option value="dismantle">Dismantle</option>
+        <option value="blaze">Blaze</option>
+        <option value="detonation">Detonation</option>
+        <option value="electrify">Electrify</option>
+        <option value="hex">Hex</option>
+        <option value="poison">Poison</option>
+        <option value="yoriichiSolarFlame">Yoriichi Solar Flame</option>
+        <option value="rupture">Rupture</option>
+      </select>
+      <input type="number" id="statusEffect1Multiplier" placeholder="Custom Multiplier" step="0.1"/>
+    </div>
+    <div class="input-group">
       <select id="statusEffect2">
-          <option value="none">None</option>
-          <option value="bolt">Bolt</option>
-          <option value="bleed">Bleed</option>
-          <option value="hemorrhage">Hemorrhage</option>
-          <option value="burn">Burn</option>
-          <option value="mutilate">Mutilate</option>
-          <option value="blackflames">Blackflames</option>
-          <option value="blizzard">Blizzard</option>
-          <option value="sunburn">Sunburn</option>
-          <option value="blueflame">Blueflame</option>
-          <option value="plasma">Plasma</option>
-          <option value="dismantle">Dismantle</option>
-          <option value="blaze">Blaze</option>
-          <option value="detonation">Detonation</option>
-          <option value="electrify">Electrify</option>
-          <option value="hex">Hex</option>
-          <option value="poison">Poison</option>
-          <option value="yoriichiSolarFlame">Yoriichi Solar Flame</option>
+        <option value="none">None</option>
+        <option value="mutilate">Mutilate</option>
+        <option value="burn">Burn</option>
+        <option value="bleed">Bleed</option>
+         <option value="hemorrhage">Hemorrhage</option>
+        <option value="burn">Burn</option>
+        <option value="mutilate">Mutilate</option>
+        <option value="blackflames">Blackflames</option>
+        <option value="blizzard">Blizzard</option>
+        <option value="sunburn">Sunburn</option>
+        <option value="blueflame">Blueflame</option>
+        <option value="plasma">Plasma</option>
+        <option value="dismantle">Dismantle</option>
+        <option value="blaze">Blaze</option>
+        <option value="detonation">Detonation</option>
+        <option value="electrify">Electrify</option>
+        <option value="hex">Hex</option>
+        <option value="poison">Poison</option>
+        <option value="yoriichiSolarFlame">Yoriichi Solar Flame</option>
+        <option value="rupture">Rupture</option>
       </select>
+      <input type="number" id="statusEffect2Multiplier" placeholder="Custom Multiplier" step="0.1"/>
+    </div>
+    <div class="input-group">
       <select id="statusEffect3">
-          <option value="none">None</option>
-          <option value="bolt">Bolt</option>
-          <option value="bleed">Bleed</option>
-          <option value="hemorrhage">Hemorrhage</option>
-          <option value="burn">Burn</option>
-          <option value="mutilate">Mutilate</option>
-          <option value="blackflames">Blackflames</option>
-          <option value="blizzard">Blizzard</option>
-          <option value="sunburn">Sunburn</option>
-          <option value="blueflame">Blueflame</option>
-          <option value="plasma">Plasma</option>
-          <option value="dismantle">Dismantle</option>
-          <option value="blaze">Blaze</option>
-          <option value="detonation">Detonation</option>
-          <option value="electrify">Electrify</option>
-          <option value="hex">Hex</option>
-          <option value="poison">Poison</option>
-          <option value="yoriichiSolarFlame">Yoriichi Solar Flame</option>
+        <option value="none">None</option>
+        <option value="mutilate">Mutilate</option>
+        <option value="burn">Burn</option>
+        <option value="bleed">Bleed</option>
+         <option value="hemorrhage">Hemorrhage</option>
+        <option value="burn">Burn</option>
+        <option value="mutilate">Mutilate</option>
+        <option value="blackflames">Blackflames</option>
+        <option value="blizzard">Blizzard</option>
+        <option value="sunburn">Sunburn</option>
+        <option value="blueflame">Blueflame</option>
+        <option value="plasma">Plasma</option>
+        <option value="dismantle">Dismantle</option>
+        <option value="blaze">Blaze</option>
+        <option value="detonation">Detonation</option>
+        <option value="electrify">Electrify</option>
+        <option value="hex">Hex</option>
+        <option value="poison">Poison</option>
+        <option value="yoriichiSolarFlame">Yoriichi Solar Flame</option>
+        <option value="rupture">Rupture</option>
       </select>
-
+      <input type="number" id="statusEffect3Multiplier" placeholder="Custom Multiplier" step="0.1"/>
+    </div>
+    <div class="input-group">
       <select id="statusEffect4">
-          <option value="none">None</option>
-          <option value="bolt">Bolt</option>
-          <option value="bleed">Bleed</option>
-          <option value="hemorrhage">Hemorrhage</option>
-          <option value="burn">Burn</option>
-          <option value="mutilate">Mutilate</option>
-          <option value="blackflames">Blackflames</option>
-          <option value="blizzard">Blizzard</option>
-          <option value="sunburn">Sunburn</option>
-          <option value="blueflame">Blueflame</option>
-          <option value="plasma">Plasma</option>
-          <option value="dismantle">Dismantle</option>
-          <option value="blaze">Blaze</option>
-          <option value="detonation">Detonation</option>
-          <option value="electrify">Electrify</option>
-          <option value="hex">Hex</option>
-          <option value="poison">Poison</option>
-          <option value="yoriichiSolarFlame">Yoriichi Solar Flame</option>
+        <option value="none">None</option>
+        <option value="mutilate">Mutilate</option>
+        <option value="burn">Burn</option>
+        <option value="bleed">Bleed</option>
+         <option value="hemorrhage">Hemorrhage</option>
+        <option value="burn">Burn</option>
+        <option value="mutilate">Mutilate</option>
+        <option value="blackflames">Blackflames</option>
+        <option value="blizzard">Blizzard</option>
+        <option value="sunburn">Sunburn</option>
+        <option value="blueflame">Blueflame</option>
+        <option value="plasma">Plasma</option>
+        <option value="dismantle">Dismantle</option>
+        <option value="blaze">Blaze</option>
+        <option value="detonation">Detonation</option>
+        <option value="electrify">Electrify</option>
+        <option value="hex">Hex</option>
+        <option value="poison">Poison</option>
+        <option value="yoriichiSolarFlame">Yoriichi Solar Flame</option>
+        <option value="rupture">Rupture</option>
       </select>
-
+      <input type="number" id="statusEffect4Multiplier" placeholder="Custom Multiplier" step="0.1"/>
+    </div>
+    <div class="input-group">
       <select id="statusEffect5">
-          <option value="none">None</option>
-          <option value="bolt">Bolt</option>
-          <option value="bleed">Bleed</option>
-          <option value="hemorrhage">Hemorrhage</option>
-          <option value="burn">Burn</option>
-          <option value="mutilate">Mutilate</option>
-          <option value="blackflames">Blackflames</option>
-          <option value="blizzard">Blizzard</option>
-          <option value="sunburn">Sunburn</option>
-          <option value="blueflame">Blueflame</option>
-          <option value="plasma">Plasma</option>
-          <option value="dismantle">Dismantle</option>
-          <option value="blaze">Blaze</option>
-          <option value="detonation">Detonation</option>
-          <option value="electrify">Electrify</option>
-          <option value="hex">Hex</option>
-          <option value="poison">Poison</option>
-          <option value="yoriichiSolarFlame">Yoriichi Solar Flame</option>
+        <option value="none">None</option>
+        <option value="mutilate">Mutilate</option>
+        <option value="burn">Burn</option>
+        <option value="bleed">Bleed</option>
+         <option value="hemorrhage">Hemorrhage</option>
+        <option value="burn">Burn</option>
+        <option value="mutilate">Mutilate</option>
+        <option value="blackflames">Blackflames</option>
+        <option value="blizzard">Blizzard</option>
+        <option value="sunburn">Sunburn</option>
+        <option value="blueflame">Blueflame</option>
+        <option value="plasma">Plasma</option>
+        <option value="dismantle">Dismantle</option>
+        <option value="blaze">Blaze</option>
+        <option value="detonation">Detonation</option>
+        <option value="electrify">Electrify</option>
+        <option value="hex">Hex</option>
+        <option value="poison">Poison</option>
+        <option value="yoriichiSolarFlame">Yoriichi Solar Flame</option>
+        <option value="rupture">Rupture</option>
       </select>
-    <label>
-  <input type="checkbox" id="resetOnHit"> DOT Resets On Hit
-</label>
+      <input type="number" id="statusEffect5Multiplier" placeholder="Custom Multiplier" step="0.1"/>
+    </div>
 
-<div class="input-group">
-  <input type="number" id="passiveMultiplier" placeholder="Passive Multiplier (e.g. 5)" />
-  <input type="number" id="passiveDuration" placeholder="Passive Duration (seconds)" />
-</div>
+    <label>
+      <input type="checkbox" id="resetOnHit"> DOT Resets On Hit
+    </label>
+
+    <div class="input-group">
+      <input type="number" id="passiveMultiplier" placeholder="Passive Multiplier (e.g. 5)" />
+      <input type="number" id="passiveDuration" placeholder="Passive Duration (seconds)" />
+    </div>
     <button onclick="calculateDPS()">Calculate DPS</button>
     <div class="result" id="result"></div>
   </div>
 </div>
 
 <script>
-  const dotConfigs = {
-    bolt: { spaReq: 5, multi: 1.2, resetsOnHit: true },
-    bleed: { spaReq: 6, multi: 1.4 },
-    hemorrhage: { spaReq: 3, multi: 1.4 },
-    burn: { spaReq: 8, multi: 1.2 },
-    mutilate: { spaReq: 8, multi: 3.0 },
-    blackflames: { spaReq: 10, multi: 4.8 },
-    blizzard: { spaReq: 9, multi: 1.9 },
-    sunburn: { spaReq: 7, multi: 1.75 },
-    blueflame: { spaReq: 5, multi: 1.3 },
-    plasma: { spaReq: 7, multi: 1.55 },
-    dismantle: { spaReq: 6, multi: 2.3 },
-    blaze: { spaReq: 7, multi: 2.25 },
-    hex: { spaReq: 6, multi: 0.5 },
-    electrify: { spaReq: 3, multi: 0.3 },
-    poison: { spaReq: 6, multi: 2.3 },
-    detonation: { spaReq: 7, multi: 2.5 },
-    yoriichiSolarFlame: { spaReq: 9, multi: 3.5, resetsOnHit: true },
-    rupture: {spaReq: 14, multi: 5.4}
-  };
+const dotConfigs = {
+  bolt: { spaReq: 5, multi: 1.2, resetsOnHit: true },
+  bleed: { spaReq: 6, multi: 1.4 },
+  hemorrhage: { spaReq: 3, multi: 1.4 },
+  burn: { spaReq: 8, multi: 1.2 },
+  mutilate: { spaReq: 8, multi: 3.0 },
+  blackflames: { spaReq: 10, multi: 4.8 },
+  blizzard: { spaReq: 9, multi: 1.9 },
+  sunburn: { spaReq: 7, multi: 1.75 },
+  blueflame: { spaReq: 5, multi: 1.3 },
+  plasma: { spaReq: 7, multi: 1.55 },
+  dismantle: { spaReq: 6, multi: 2.3 },
+  blaze: { spaReq: 7, multi: 2.25 },
+  hex: { spaReq: 6, multi: 0.5 },
+  electrify: { spaReq: 3, multi: 0.3 },
+  poison: { spaReq: 6, multi: 2.3 },
+  detonation: { spaReq: 7, multi: 2.5 },
+  yoriichiSolarFlame: { spaReq: 9, multi: 3.5, resetsOnHit: true },
+  rupture: {spaReq: 14, multi: 5.4}
+};
 
-  function formatLargeNumber(num) {
+function formatLargeNumber(num) {
   if (num >= 1e12) return (num / 1e12).toFixed(2) + '&nbsp;Trillion';
   if (num >= 1e9) return (num / 1e9).toFixed(2) + '&nbsp;Billion';
   if (num >= 1e6) return (num / 1e6).toFixed(2) + '&nbsp;Million';
@@ -333,13 +363,13 @@ function calculateDPS() {
   let critChance = parseFloat(document.getElementById('critChance').value) || 0;
   critChance = Math.min(critChance, 100);
 
-  const statusKeys = [
-    document.getElementById('statusEffect').value,
-    document.getElementById('statusEffect1').value,
-    document.getElementById('statusEffect2').value,
-    document.getElementById('statusEffect3').value,
-    document.getElementById('statusEffect4').value,
-    document.getElementById('statusEffect5').value
+  const statusSlots = [
+    { key: document.getElementById('statusEffect').value, custom: parseFloat(document.getElementById('statusEffectMultiplier').value) },
+    { key: document.getElementById('statusEffect1').value, custom: parseFloat(document.getElementById('statusEffect1Multiplier').value) },
+    { key: document.getElementById('statusEffect2').value, custom: parseFloat(document.getElementById('statusEffect2Multiplier').value) },
+    { key: document.getElementById('statusEffect3').value, custom: parseFloat(document.getElementById('statusEffect3Multiplier').value) },
+    { key: document.getElementById('statusEffect4').value, custom: parseFloat(document.getElementById('statusEffect4Multiplier').value) },
+    { key: document.getElementById('statusEffect5').value, custom: parseFloat(document.getElementById('statusEffect5Multiplier').value) },
   ];
 
   const resultDiv = document.getElementById('result');
@@ -360,32 +390,33 @@ function calculateDPS() {
   const hitDps = averageHit / spa;
   const baseDps = fullDamage / spa;
 
-  // DOT calculation function
-  function calculateDotDps(statusKey) {
-  if (statusKey === 'none' || !dotConfigs[statusKey]) return 0;
-  const config = dotConfigs[statusKey];
+  function calculateDotDps(statusKey, customMultiplier) {
+    if (statusKey === 'none' || !dotConfigs[statusKey]) return 0;
+    const config = dotConfigs[statusKey];
+    const multiplier = customMultiplier && !isNaN(customMultiplier) ? customMultiplier : config.multi;
 
-
-  if (resetOnHitChecked) {
-    const ticks = Math.min(Math.ceil(spa), config.spaReq);
-    const damagePerTick = (fullDamage * config.multi) / config.spaReq;
-    return (damagePerTick * ticks) / spa;
-  } else {
-    const dotInterval = Math.ceil(config.spaReq / spa) * spa;
-    return (fullDamage * config.multi) / dotInterval;
+    if (resetOnHitChecked) {
+      const ticks = Math.min(Math.ceil(spa), config.spaReq);
+      const damagePerTick = (fullDamage * multiplier) / config.spaReq;
+      return (damagePerTick * ticks) / spa;
+    } else {
+      const dotInterval = Math.ceil(config.spaReq / spa) * spa;
+      return (fullDamage * multiplier) / dotInterval;
+    }
   }
-}
 
   let totalDotDps = 0;
-  statusKeys.forEach(key => { totalDotDps += calculateDotDps(key); });
+  statusSlots.forEach(slot => {
+    totalDotDps += calculateDotDps(slot.key, slot.custom);
+  });
 
-const averageNoCritDps = baseDps + totalDotDps;
-let totalDps = hitDps + totalDotDps;
+  const averageNoCritDps = baseDps + totalDotDps;
+  let totalDps = hitDps + totalDotDps;
 
-// Add passive DPS
-if (passiveMultiplier > 0 && passiveDuration > 0) {
+  // Add passive DPS
+  if (passiveMultiplier > 0 && passiveDuration > 0) {
     totalDps += (fullDamage * passiveMultiplier) / passiveDuration;
-}
+  }
 
   resultDiv.innerHTML = `
     Usual DPS (no crit): ${formatLargeNumber(averageNoCritDps)}<br>
@@ -399,17 +430,3 @@ function toggleMode() {
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
