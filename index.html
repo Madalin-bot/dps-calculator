@@ -142,7 +142,7 @@ const dotConfigs = {
   dismantle: { spaReq: 6, multi: 2.3 },
   blaze: { spaReq: 7, multi: 2.25 },
   hex: { spaReq: 6, multi: 0.5 },
-  electrify: { spaReq: 3, multi: 0.3 },
+  electrify: { spaReq: 3, multi: 1.2 },
   poison: { spaReq: 6, multi: 2.3 },
   detonation: { spaReq: 7, multi: 2.5 },
   yoriichiSolarFlame: { spaReq: 9, multi: 3.5 },
@@ -154,6 +154,8 @@ const dotSelects = ['statusEffect','statusEffect1','statusEffect2','statusEffect
 // Populate DOT dropdowns
 dotSelects.forEach(id => {
   const select = document.getElementById(id);
+
+  // Add "None" option
   const noneOpt = document.createElement('option');
   noneOpt.value = 'none';
   noneOpt.textContent = 'None';
@@ -165,7 +167,7 @@ dotSelects.forEach(id => {
     opt.textContent = key.charAt(0).toUpperCase() + key.slice(1);
     select.appendChild(opt);
   }
-  select.value = 'none';
+  select.value = 'none'; // set default selection
 });
 
 function formatLargeNumber(num) {
@@ -220,12 +222,8 @@ function calculateDPS() {
     const totalDotDamage = fullDamage * multiplier;
 
     if (slot.reset) {
-  // Reset-on-hit DPS uses SPA as the loop duration
-  totalDotDps += totalDotDamage / spa;
-} else {
-  // Normal DPS spread over DoT duration
-  totalDotDps += totalDotDamage / cfg.spaReq;
-}
+      // Reset-on-hit DPS uses SPA as the loop duration
+      totalDotDps += totalDotDamage / spa;
     } else {
       // Normal DPS spread over DoT duration
       totalDotDps += totalDotDamage / cfg.spaReq;
@@ -253,4 +251,3 @@ function toggleMode() {
 </script>
 </body>
 </html>
-
