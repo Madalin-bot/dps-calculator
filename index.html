@@ -220,14 +220,12 @@ function calculateDPS() {
     const totalDotDamage = fullDamage * multiplier;
 
     if (slot.reset) {
-      // Reset-on-hit DPS
-      // If SPA < DoT duration: DPS = totalDoTDamage * SPA / (spaReq^2)
-      // If SPA >= DoT duration: DPS = totalDoTDamage / SPA
-      if (spa < cfg.spaReq) {
-        totalDotDps += totalDotDamage * spa / (cfg.spaReq * cfg.spaReq);
-      } else {
-        totalDotDps += totalDotDamage / spa;
-      }
+  // Reset-on-hit DPS uses SPA as the loop duration
+  totalDotDps += totalDotDamage / spa;
+} else {
+  // Normal DPS spread over DoT duration
+  totalDotDps += totalDotDamage / cfg.spaReq;
+}
     } else {
       // Normal DPS spread over DoT duration
       totalDotDps += totalDotDamage / cfg.spaReq;
@@ -255,3 +253,4 @@ function toggleMode() {
 </script>
 </body>
 </html>
+
