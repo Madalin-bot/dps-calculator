@@ -44,28 +44,36 @@ body {
 
 .card {
   background-color: var(--card-bg);
-  padding: 2rem 2.5rem;
+  padding: 2rem;
   border-radius: var(--border-radius);
   width: 100%;
-  max-width: 600px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.2rem 2rem;
+  max-width: 700px;
+  box-shadow: 0 12px 50px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .card h1 {
-  grid-column: 1 / -1;
   text-align: center;
-  margin-bottom: 1.5rem;
   font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--button-bg);
 }
 
-label {
-  font-size: 0.9rem;
-  margin-bottom: 0.3rem;
-  display: block;
-  color: var(--text-color);
+.section {
+  background-color: rgba(255,255,255,0.05);
+  padding: 1rem 1.5rem;
+  border-radius: var(--border-radius);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.section h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--button-bg);
 }
 
 input[type="number"], select {
@@ -87,22 +95,23 @@ input[type="number"]:focus, select:focus {
   outline: 2px solid var(--button-bg);
 }
 
-.section {
-  grid-column: 1 / -1;
-  background-color: rgba(255,255,255,0.05);
-  padding: 1rem;
-  border-radius: var(--border-radius);
-  margin-bottom: 1rem;
+.dot-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem 1.5rem;
 }
 
-.section h2 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.1rem;
-  color: var(--button-bg);
+.dot-slot {
+  background-color: rgba(255,255,255,0.05);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
 }
 
 .button-container {
-  grid-column: 1 / -1;
+  width: 100%;
 }
 
 button {
@@ -126,12 +135,11 @@ button:active {
 }
 
 .result {
-  grid-column: 1 / -1;
   font-size: 1.2rem;
   color: var(--result-color);
   text-align: center;
-  margin-top: 1rem;
   word-wrap: break-word;
+  padding: 0.5rem;
 }
 
 .toggle-mode {
@@ -149,21 +157,22 @@ button:active {
 }
 
 @media screen and (max-width: 700px) {
-  .card {
+  .dot-grid {
     grid-template-columns: 1fr;
   }
 }
-</style>
+  </style>
 </head>
 <body>
-<p id="info-message">This doesn't work with perfect spa DoT units yet, like Benimaru/Itachi/Sasuke!</p>
-<canvas id="background"></canvas>
+
 <button class="toggle-mode" onclick="toggleMode()">Toggle Mode</button>
 
 <div class="container">
   <div class="card">
     <h1>DPS Calculator</h1>
-    <div class="input-group">
+
+    <div class="section">
+      <h2>Base Attack</h2>
       <input type="number" id="damage" placeholder="Enter Damage" />
       <select id="damageUnit">
         <option value="1">-</option>
@@ -171,173 +180,61 @@ button:active {
         <option value="1000000000">Billion</option>
         <option value="1000000000000">Trillion</option>
       </select>
-    </div>
-    <input type="number" id="spa" placeholder="Enter SPA (Seconds Per Attack)" />
-    <input type="number" id="critDmg" placeholder="Crit Damage % (e.g. 50 for 50%)" />
-    <input type="number" id="critChance" placeholder="Crit Chance % (e.g. 30 for 30%)" />
-
-    <!-- DOT select + custom multiplier inputs -->
-    <div class="input-group">
-      <select id="statusEffect">
-        <option value="none">None</option>
-        <option value="bolt">Bolt</option>
-        <option value="bleed">Bleed</option>
-        <option value="hemorrhage">Hemorrhage</option>
-        <option value="burn">Burn</option>
-        <option value="mutilate">Mutilate</option>
-        <option value="blackflames">Blackflames</option>
-        <option value="blizzard">Blizzard</option>
-        <option value="sunburn">Sunburn</option>
-        <option value="blueflame">Blueflame</option>
-        <option value="plasma">Plasma</option>
-        <option value="dismantle">Dismantle</option>
-        <option value="blaze">Blaze</option>
-        <option value="detonation">Detonation</option>
-        <option value="electrify">Electrify</option>
-        <option value="hex">Hex</option>
-        <option value="poison">Poison</option>
-        <option value="yoriichiSolarFlame">Yoriichi Solar Flame</option>
-        <option value="rupture">Rupture</option>
-      </select>
-      <input type="number" id="statusEffectMultiplier" placeholder="Custom Multiplier" step="0.1"/>
+      <input type="number" id="spa" placeholder="Enter SPA (Seconds Per Attack)" />
+      <input type="number" id="critDmg" placeholder="Crit Damage % (e.g. 50)" />
+      <input type="number" id="critChance" placeholder="Crit Chance % (e.g. 30)" />
     </div>
 
-    <!-- Repeat for statusEffect1..statusEffect5 -->
-    <div class="input-group">
-      <select id="statusEffect1">
-        <option value="none">None</option>
-        <option value="mutilate">Mutilate</option>
-        <option value="burn">Burn</option>
-        <option value="bleed">Bleed</option>
-         <option value="hemorrhage">Hemorrhage</option>
-        <option value="burn">Burn</option>
-        <option value="mutilate">Mutilate</option>
-        <option value="blackflames">Blackflames</option>
-        <option value="blizzard">Blizzard</option>
-        <option value="sunburn">Sunburn</option>
-        <option value="blueflame">Blueflame</option>
-        <option value="plasma">Plasma</option>
-        <option value="dismantle">Dismantle</option>
-        <option value="blaze">Blaze</option>
-        <option value="detonation">Detonation</option>
-        <option value="electrify">Electrify</option>
-        <option value="hex">Hex</option>
-        <option value="poison">Poison</option>
-        <option value="yoriichiSolarFlame">Yoriichi Solar Flame</option>
-        <option value="rupture">Rupture</option>
-      </select>
-      <input type="number" id="statusEffect1Multiplier" placeholder="Custom Multiplier" step="0.1"/>
-    </div>
-    <div class="input-group">
-      <select id="statusEffect2">
-        <option value="none">None</option>
-        <option value="mutilate">Mutilate</option>
-        <option value="burn">Burn</option>
-        <option value="bleed">Bleed</option>
-         <option value="hemorrhage">Hemorrhage</option>
-        <option value="burn">Burn</option>
-        <option value="mutilate">Mutilate</option>
-        <option value="blackflames">Blackflames</option>
-        <option value="blizzard">Blizzard</option>
-        <option value="sunburn">Sunburn</option>
-        <option value="blueflame">Blueflame</option>
-        <option value="plasma">Plasma</option>
-        <option value="dismantle">Dismantle</option>
-        <option value="blaze">Blaze</option>
-        <option value="detonation">Detonation</option>
-        <option value="electrify">Electrify</option>
-        <option value="hex">Hex</option>
-        <option value="poison">Poison</option>
-        <option value="yoriichiSolarFlame">Yoriichi Solar Flame</option>
-        <option value="rupture">Rupture</option>
-      </select>
-      <input type="number" id="statusEffect2Multiplier" placeholder="Custom Multiplier" step="0.1"/>
-    </div>
-    <div class="input-group">
-      <select id="statusEffect3">
-        <option value="none">None</option>
-        <option value="mutilate">Mutilate</option>
-        <option value="burn">Burn</option>
-        <option value="bleed">Bleed</option>
-         <option value="hemorrhage">Hemorrhage</option>
-        <option value="burn">Burn</option>
-        <option value="mutilate">Mutilate</option>
-        <option value="blackflames">Blackflames</option>
-        <option value="blizzard">Blizzard</option>
-        <option value="sunburn">Sunburn</option>
-        <option value="blueflame">Blueflame</option>
-        <option value="plasma">Plasma</option>
-        <option value="dismantle">Dismantle</option>
-        <option value="blaze">Blaze</option>
-        <option value="detonation">Detonation</option>
-        <option value="electrify">Electrify</option>
-        <option value="hex">Hex</option>
-        <option value="poison">Poison</option>
-        <option value="yoriichiSolarFlame">Yoriichi Solar Flame</option>
-        <option value="rupture">Rupture</option>
-      </select>
-      <input type="number" id="statusEffect3Multiplier" placeholder="Custom Multiplier" step="0.1"/>
-    </div>
-    <div class="input-group">
-      <select id="statusEffect4">
-        <option value="none">None</option>
-        <option value="mutilate">Mutilate</option>
-        <option value="burn">Burn</option>
-        <option value="bleed">Bleed</option>
-         <option value="hemorrhage">Hemorrhage</option>
-        <option value="burn">Burn</option>
-        <option value="mutilate">Mutilate</option>
-        <option value="blackflames">Blackflames</option>
-        <option value="blizzard">Blizzard</option>
-        <option value="sunburn">Sunburn</option>
-        <option value="blueflame">Blueflame</option>
-        <option value="plasma">Plasma</option>
-        <option value="dismantle">Dismantle</option>
-        <option value="blaze">Blaze</option>
-        <option value="detonation">Detonation</option>
-        <option value="electrify">Electrify</option>
-        <option value="hex">Hex</option>
-        <option value="poison">Poison</option>
-        <option value="yoriichiSolarFlame">Yoriichi Solar Flame</option>
-        <option value="rupture">Rupture</option>
-      </select>
-      <input type="number" id="statusEffect4Multiplier" placeholder="Custom Multiplier" step="0.1"/>
-    </div>
-    <div class="input-group">
-      <select id="statusEffect5">
-        <option value="none">None</option>
-        <option value="mutilate">Mutilate</option>
-        <option value="burn">Burn</option>
-        <option value="bleed">Bleed</option>
-         <option value="hemorrhage">Hemorrhage</option>
-        <option value="burn">Burn</option>
-        <option value="mutilate">Mutilate</option>
-        <option value="blackflames">Blackflames</option>
-        <option value="blizzard">Blizzard</option>
-        <option value="sunburn">Sunburn</option>
-        <option value="blueflame">Blueflame</option>
-        <option value="plasma">Plasma</option>
-        <option value="dismantle">Dismantle</option>
-        <option value="blaze">Blaze</option>
-        <option value="detonation">Detonation</option>
-        <option value="electrify">Electrify</option>
-        <option value="hex">Hex</option>
-        <option value="poison">Poison</option>
-        <option value="yoriichiSolarFlame">Yoriichi Solar Flame</option>
-        <option value="rupture">Rupture</option>
-      </select>
-      <input type="number" id="statusEffect5Multiplier" placeholder="Custom Multiplier" step="0.1"/>
+    <div class="section">
+      <h2>DOTs</h2>
+      <div class="dot-grid">
+        <!-- DOT slots -->
+        <div class="dot-slot">
+          <label>DOT 1</label>
+          <select id="statusEffect"></select>
+          <input type="number" id="statusEffectMultiplier" placeholder="Custom Multiplier" step="0.1"/>
+        </div>
+        <div class="dot-slot">
+          <label>DOT 2</label>
+          <select id="statusEffect1"></select>
+          <input type="number" id="statusEffect1Multiplier" placeholder="Custom Multiplier" step="0.1"/>
+        </div>
+        <div class="dot-slot">
+          <label>DOT 3</label>
+          <select id="statusEffect2"></select>
+          <input type="number" id="statusEffect2Multiplier" placeholder="Custom Multiplier" step="0.1"/>
+        </div>
+        <div class="dot-slot">
+          <label>DOT 4</label>
+          <select id="statusEffect3"></select>
+          <input type="number" id="statusEffect3Multiplier" placeholder="Custom Multiplier" step="0.1"/>
+        </div>
+        <div class="dot-slot">
+          <label>DOT 5</label>
+          <select id="statusEffect4"></select>
+          <input type="number" id="statusEffect4Multiplier" placeholder="Custom Multiplier" step="0.1"/>
+        </div>
+        <div class="dot-slot">
+          <label>DOT 6</label>
+          <select id="statusEffect5"></select>
+          <input type="number" id="statusEffect5Multiplier" placeholder="Custom Multiplier" step="0.1"/>
+        </div>
+      </div>
+      <label>
+        <input type="checkbox" id="resetOnHit"> DOT Resets On Hit
+      </label>
     </div>
 
-    <label>
-      <input type="checkbox" id="resetOnHit"> DOT Resets On Hit
-    </label>
-
-    <div class="input-group">
+    <div class="section">
+      <h2>Passive</h2>
       <input type="number" id="passiveMultiplier" placeholder="Passive Multiplier (e.g. 5)" />
       <input type="number" id="passiveDuration" placeholder="Passive Duration (seconds)" />
     </div>
-    <button onclick="calculateDPS()">Calculate DPS</button>
+
+    <div class="button-container">
+      <button onclick="calculateDPS()">Calculate DPS</button>
+    </div>
+
     <div class="result" id="result"></div>
   </div>
 </div>
@@ -364,10 +261,29 @@ const dotConfigs = {
   rupture: {spaReq: 14, multi: 5.4}
 };
 
+const dotSelects = [
+  'statusEffect','statusEffect1','statusEffect2','statusEffect3','statusEffect4','statusEffect5'
+];
+
+// Populate DOT dropdowns
+dotSelects.forEach(id => {
+  const select = document.getElementById(id);
+  for (const key in dotConfigs) {
+    const opt = document.createElement('option');
+    opt.value = key;
+    opt.textContent = key.charAt(0).toUpperCase() + key.slice(1);
+    select.appendChild(opt);
+  }
+  const noneOpt = document.createElement('option');
+  noneOpt.value = 'none';
+  noneOpt.textContent = 'None';
+  select.insertBefore(noneOpt, select.firstChild);
+});
+
 function formatLargeNumber(num) {
-  if (num >= 1e12) return (num / 1e12).toFixed(2) + '&nbsp;Trillion';
-  if (num >= 1e9) return (num / 1e9).toFixed(2) + '&nbsp;Billion';
-  if (num >= 1e6) return (num / 1e6).toFixed(2) + '&nbsp;Million';
+  if (num >= 1e12) return (num / 1e12).toFixed(2) + ' Trillion';
+  if (num >= 1e9) return (num / 1e9).toFixed(2) + ' Billion';
+  if (num >= 1e6) return (num / 1e6).toFixed(2) + ' Million';
   return num.toFixed(2);
 }
 
@@ -379,14 +295,9 @@ function calculateDPS() {
   let critChance = parseFloat(document.getElementById('critChance').value) || 0;
   critChance = Math.min(critChance, 100);
 
-  const statusSlots = [
-    { key: document.getElementById('statusEffect').value, custom: parseFloat(document.getElementById('statusEffectMultiplier').value) },
-    { key: document.getElementById('statusEffect1').value, custom: parseFloat(document.getElementById('statusEffect1Multiplier').value) },
-    { key: document.getElementById('statusEffect2').value, custom: parseFloat(document.getElementById('statusEffect2Multiplier').value) },
-    { key: document.getElementById('statusEffect3').value, custom: parseFloat(document.getElementById('statusEffect3Multiplier').value) },
-    { key: document.getElementById('statusEffect4').value, custom: parseFloat(document.getElementById('statusEffect4Multiplier').value) },
-    { key: document.getElementById('statusEffect5').value, custom: parseFloat(document.getElementById('statusEffect5Multiplier').value) },
-  ];
+  const statusSlots = dotSelects.map((id, i) => {
+    return { key: document.getElementById(id).value, custom: parseFloat(document.getElementById(id + (i===0?'Multiplier':i+'Multiplier')).value) };
+  });
 
   const resultDiv = document.getElementById('result');
   const resetOnHitChecked = document.getElementById('resetOnHit').checked;
@@ -429,7 +340,6 @@ function calculateDPS() {
   const averageNoCritDps = baseDps + totalDotDps;
   let totalDps = hitDps + totalDotDps;
 
-  // Add passive DPS
   if (passiveMultiplier > 0 && passiveDuration > 0) {
     totalDps += (fullDamage * passiveMultiplier) / passiveDuration;
   }
@@ -446,5 +356,3 @@ function toggleMode() {
 </script>
 </body>
 </html>
-
-
