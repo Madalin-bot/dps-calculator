@@ -95,7 +95,7 @@ body.light-mode .section h2 {
 input, select {
   width: calc(50% - 10px);
   padding: 10px;
-  margin: 5px 5px 15px 0;
+  margin: 5px 5px 5px 0;
   border-radius: 8px;
   border: none;
   font-size: 1em;
@@ -128,7 +128,7 @@ select {
 /* DOT Grid */
 .dot-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 10px;
 }
 
@@ -137,15 +137,14 @@ select {
   flex-direction: column;
 }
 
-label {
+.dot-slot label {
   margin-bottom: 5px;
   font-weight: 600;
 }
 
-/* Checkbox */
-input[type="checkbox"] {
+.dot-slot input[type="checkbox"] {
   width: auto;
-  margin-right: 8px;
+  margin-top: 5px;
 }
 
 /* Buttons */
@@ -235,36 +234,39 @@ body.light-mode .result {
           <label>DOT 1</label>
           <select id="statusEffect"></select>
           <input type="number" id="statusEffectMultiplier" placeholder="Custom Multiplier" step="0.1"/>
+          <label><input type="checkbox" id="statusEffectReset"> Resets On Hit</label>
         </div>
         <div class="dot-slot">
           <label>DOT 2</label>
           <select id="statusEffect1"></select>
           <input type="number" id="statusEffect1Multiplier" placeholder="Custom Multiplier" step="0.1"/>
+          <label><input type="checkbox" id="statusEffect1Reset"> Resets On Hit</label>
         </div>
         <div class="dot-slot">
           <label>DOT 3</label>
           <select id="statusEffect2"></select>
           <input type="number" id="statusEffect2Multiplier" placeholder="Custom Multiplier" step="0.1"/>
+          <label><input type="checkbox" id="statusEffect2Reset"> Resets On Hit</label>
         </div>
         <div class="dot-slot">
           <label>DOT 4</label>
           <select id="statusEffect3"></select>
           <input type="number" id="statusEffect3Multiplier" placeholder="Custom Multiplier" step="0.1"/>
+          <label><input type="checkbox" id="statusEffect3Reset"> Resets On Hit</label>
         </div>
         <div class="dot-slot">
           <label>DOT 5</label>
           <select id="statusEffect4"></select>
           <input type="number" id="statusEffect4Multiplier" placeholder="Custom Multiplier" step="0.1"/>
+          <label><input type="checkbox" id="statusEffect4Reset"> Resets On Hit</label>
         </div>
         <div class="dot-slot">
           <label>DOT 6</label>
           <select id="statusEffect5"></select>
           <input type="number" id="statusEffect5Multiplier" placeholder="Custom Multiplier" step="0.1"/>
+          <label><input type="checkbox" id="statusEffect5Reset"> Resets On Hit</label>
         </div>
       </div>
-      <label>
-        <input type="checkbox" id="resetOnHit"> DOT Resets On Hit
-      </label>
     </div>
 
     <div class="section">
@@ -283,7 +285,7 @@ body.light-mode .result {
 
 <script>
 const dotConfigs = {
-  bolt: { spaReq: 5, multi: 1.2, resetsOnHit: true },
+  bolt: { spaReq: 5, multi: 1.2 },
   bleed: { spaReq: 6, multi: 1.4 },
   hemorrhage: { spaReq: 3, multi: 1.4 },
   burn: { spaReq: 8, multi: 1.2 },
@@ -299,7 +301,7 @@ const dotConfigs = {
   electrify: { spaReq: 3, multi: 0.3 },
   poison: { spaReq: 6, multi: 2.3 },
   detonation: { spaReq: 7, multi: 2.5 },
-  yoriichiSolarFlame: { spaReq: 9, multi: 3.5, resetsOnHit: true },
+  yoriichiSolarFlame: { spaReq: 9, multi: 3.5 },
   rupture: {spaReq: 14, multi: 5.4}
 };
 
@@ -323,7 +325,7 @@ dotSelects.forEach(id => {
     select.appendChild(opt);
   }
 
-  select.value = 'none'; // <-- ensures default is None
+  select.value = 'none';
 });
 
 function formatLargeNumber(num) {
@@ -343,12 +345,13 @@ function calculateDPS() {
 
   const statusSlots = dotSelects.map((id, i) => {
     const multiplierInputId = i === 0 ? 'statusEffectMultiplier' : `statusEffect${i}Multiplier`;
+    const resetInputId = i === 0 ? 'statusEffectReset' : `statusEffect${i}Reset`;
     const customValue = parseFloat(document.getElementById(multiplierInputId).value);
-    return { key: document.getElementById(id).value, custom: isNaN(customValue) ? null : customValue };
+    const resetChecked = document.getElementById(resetInputId).checked;
+    return { key: document.getElementById(id).value, custom: isNaN(customValue) ? null : customValue, reset: resetChecked };
   });
 
   const resultDiv = document.getElementById('result');
-  const resetOnHitChecked = document.getElementById('resetOnHit').checked;
 
   const passiveMultiplier = parseFloat(document.getElementById('passiveMultiplier').value) || 0;
   const passiveDuration = parseFloat(document.getElementById('passiveDuration').value) || 0;
@@ -365,12 +368,13 @@ function calculateDPS() {
   const hitDps = averageHit / spa;
   const baseDps = fullDamage / spa;
 
-  function calculateDotDps(statusKey, customMultiplier) {
-    if (statusKey === 'none' || !dotConfigs[statusKey]) return 0;
-    const config = dotConfigs[statusKey];
-    const multiplier = customMultiplier || config.multi;
+  function calculateDotDps(slot) {
+    const { key, custom, reset } = slot;
+    if (key === 'none' || !dotConfigs[key]) return 0;
+    const config = dotConfigs[key];
+    const multiplier = custom || config.multi;
 
-    if (resetOnHitChecked) {
+    if (reset) {
       const ticks = Math.min(Math.ceil(spa), config.spaReq);
       const damagePerTick = (fullDamage * multiplier) / config.spaReq;
       return (damagePerTick * ticks) / spa;
@@ -382,7 +386,7 @@ function calculateDPS() {
 
   let totalDotDps = 0;
   statusSlots.forEach(slot => {
-    totalDotDps += calculateDotDps(slot.key, slot.custom);
+    totalDotDps += calculateDotDps(slot);
   });
 
   const averageNoCritDps = baseDps + totalDotDps;
@@ -404,4 +408,3 @@ function toggleMode() {
 </script>
 </body>
 </html>
-
